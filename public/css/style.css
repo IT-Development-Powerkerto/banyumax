@@ -1,0 +1,128 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+
+.loginlp {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.lp {
+    flex: 1;
+    height: 100vh;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.lp .contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 50px;
+}
+
+.lp .contents form{
+    margin-bottom: 50px;
+}
+
+.lp h1{
+    display: flex;
+    justify-content: center;
+    color: rgb(0, 0, 0);
+    font-family: viga;
+    font-size: 40px;
+    margin-top: 70px;
+}
+
+.lp h2, p{
+    font-family: 'Poppins', sans-serif;
+}
+
+.lp .contents h2 {
+    margin-top: 30px;
+    font-size: 24px;
+    font-weight: bolder;
+    color: black;
+}
+
+.lp .contents p {
+    margin-top: -10px;
+    color: #009EF7;
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+.lp h1 span{
+    color: #29BFFD;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    
+}
+
+.lr {
+    flex: 2;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-image: url(../img/back.png);
+    background-size: cover;
+    overflow: hidden;
+    text-align: center;
+    justify-content: center;
+}
+
+.lr h1, h2 {
+    color: white;
+    z-index: 2;
+}
+
+
+.lr::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgb(24, 28, 50);
+    background: rgb(0, 0, 0);
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.5046393557422969) 0%,
+        rgba(51, 51, 51, 0.5) 100%
+    );
+    position: absolute;
+    bottom: 0;
+}
+
+
+@media (max-width: 991.98px) {
+    
+
+    .lp {
+        display: flex;
+        z-index: 2;
+        flex: 1;
+    }
+
+    .lr {
+        display:none;
+    }
+    
+}
