@@ -55,6 +55,65 @@
 	<script src="assets/js/custom/modals/upgrade-plan.js"></script>
 	<script src="assets/js/custom/intro.js"></script>
     <script>
+        $(function(){
+            function daily() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dailyWidget') }}",
+                    dataType: "JSON",
+                    success: function (res) {
+                        $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
+                        // $('[closing_count]').text(res.closing_count);
+                    }
+                });
+            }
+            function weekly(){
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dailyWidget') }}",
+                    dataType: "JSON",
+                    success: function (res) {
+                        $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
+                        // $('[closing_count]').text(res.closing_count);
+                    }
+                });
+            }
+            function monthly(){
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('monthlyWidget') }}",
+                    dataType: "JSON",
+                    success: function (res) {
+                        $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
+                        // $('[closing_count]').text(res.closing_count);
+                    }
+                });
+            }
+            daily();
+            $('#daily').click(function (e) {
+                e.preventDefault();
+                daily();
+                $(this).addClass('active');
+                $('#weekly').removeClass('active');
+                $('#monthly').removeClass('active');
+            });
+            $('#weekly').click(function (e) {
+                e.preventDefault();
+                weekly();
+                $(this).addClass('active');
+                $('#daily').removeClass('active');
+                $('#monthly').removeClass('active');
+            });
+            $('#monthly').click(function (e) {
+                e.preventDefault();
+                monthly();
+                $(this).addClass('active');
+                $('#daily').removeClass('active');
+                $('#weekly').removeClass('active');
+            });
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             $('#role_id').on('change', function() {
                 var roleId = $(this).val();

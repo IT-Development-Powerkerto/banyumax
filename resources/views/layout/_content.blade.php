@@ -11,15 +11,21 @@
 		<ul class="nav me-2">
 			<li class="nav-item">
 				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light active fw-bold fs-7 px-4 me-1"
-					href="{{route('dashboard.index')}}">Daily</a>
+					id="daily" >Daily</a>
+				{{-- <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light active fw-bold fs-7 px-4 me-1"
+					href="{{route('dashboard.index')}}">Daily</a> --}}
 			</li>
 			<li class="nav-item">
 				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4 me-1"
-					href="{{ route ('weeklydashboard') }}">Weekly</a>
+					id="weekly">Weekly</a>
+				{{-- <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4 me-1"
+					href="{{ route ('weeklydashboard') }}">Weekly</a> --}}
 			</li>
 			<li class="nav-item">
 				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4"
-					href="{{ route ('monthlydashboard') }}">Monthly</a>
+					id="monthly">Monthly</a>
+				{{-- <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4"
+					href="{{ route ('monthlydashboard') }}">Monthly</a> --}}
 			</li>
 		</ul>
 	</div>
@@ -32,14 +38,14 @@
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		@endif
-	
+
 		@if(session()->has('error'))
 		<div class="alert alert-danger alert-dismissible fade show" role="alert">
 			{{ session('error') }}
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		@endif
-		
+
 		<!--begin::Col-->
 		<div class="col-xl-3">
 
@@ -133,7 +139,7 @@
 		<div class="col-xl-12 mt-n1">
 
 			@include('partials/widgets/tables/_widget-8')
-			
+
 		</div>
 		<!--end::Col-->
 
@@ -142,7 +148,7 @@
 		<div class="col-xl-6 mt-n2">
 
 			@include('partials/widgets/tables/_widget-7')
-			
+
 		</div>
 		<!--end::Col-->
 
@@ -156,7 +162,7 @@
 	</div>
 	<!--end::Row-->
 
-	
+
 
 	<!--begin::Row-->
 	<div class="row gy-5 g-xl-1 mt-n3">

@@ -87,6 +87,9 @@ Route::get('/viewprofile/{user}', [UserController::class, 'viewProfile'])->name(
 Route::get('/status/update', [UserController::class, 'updateStatus'])->name('users.update.status')->middleware('auth');
 
 Route::resource('/dashboard', DashboardController::class)->middleware('auth');
+Route::get('/dailyWidget', [DashboardController::class, 'dailyWidget'])->name('dailyWidget');
+Route::get('/weeklyWidget', [DashboardController::class, 'weeklyWidget'])->name('weeklyWidget');
+Route::get('/monthlyWidget', [DashboardController::class, 'monthlyWidget'])->name('monthlyWidget');
 Route::get('/WeeklyDashboard', [DashboardController::class, 'WeeklyDashboard'])->name('weeklydashboard')->middleware('auth');
 Route::get('/MonthlyDashboard', [DashboardController::class, 'MonthlyDashboard'])->name('monthlydashboard')->middleware('auth');
 
