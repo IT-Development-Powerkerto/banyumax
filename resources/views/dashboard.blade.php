@@ -64,6 +64,9 @@
                     success: function (res) {
                         $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
                         $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
+                        res.lead_count == 0 ? $('[closing_rate]').text('0 %') : $('[closing_rate]').text(Math.round((res.closing_count/res.lead_count)*100) +' %');
+
+                        console.log(typeof(res.closing_count))
                     }
                 });
             }
@@ -75,6 +78,7 @@
                     success: function (res) {
                         $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
                         $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
+                        res.lead_count == 0 ? $('[closing_rate]').text('0 %') : $('[closing_rate]').text(Math.round((res.closing_count/res.lead_count)*100) +' %');
                     }
                 });
             }
@@ -86,6 +90,7 @@
                     success: function (res) {
                         $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
                         $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
+                        res.lead_count == 0 ? $('[closing_rate]').text('0 %') : $('[closing_rate]').text(Math.round((res.closing_count/res.lead_count)*100) +' %');
                     }
                 });
             }
