@@ -253,15 +253,7 @@ class DashboardController extends Controller
                 return redirect(route('JA-adv.index'));
             }
             else{
-                return view('dashboard', compact('users', 'lead_max', 'closing_max'),['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
-                ->with('products', $products)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('leads', $leads)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('client', $client)->with('day', $day)
-                ->with('inputer', $inputer)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
-                ->with('lead_su', $lead_su)->with('lead_mo', $lead_mo)->with('lead_tu', $lead_tu)->with('lead_we', $lead_we)->with('lead_th', $lead_th)->with('lead_fr', $lead_fr)->with('lead_sa', $lead_sa)
-                ->with('closing_su', $closing_su)->with('closing_mo', $closing_mo)->with('closing_tu', $closing_tu)->with('closing_we', $closing_we)->with('closing_th', $closing_th)->with('closing_fr', $closing_fr)->with('closing_sa', $closing_sa)
-                ->with('omset_su', $omset_su)->with('omset_mo', $omset_mo)->with('omset_tu', $omset_tu)->with('omset_we', $omset_we)->with('omset_th', $omset_th)->with('omset_fr', $omset_fr)->with('omset_sa', $omset_sa)
-                ->with('advertising_su', $advertising_su)->with('advertising_mo', $advertising_mo)->with('advertising_tu', $advertising_tu)->with('advertising_we', $advertising_we)->with('advertising_th', $advertising_th)->with('advertising_fr', $advertising_fr)->with('advertising_sa', $advertising_sa)
-                ->with('lead_day_count', $lead_day_count)->with('omset_day_count', $omset_day_count)->with('advertising_day_count', $advertising_day_count)->with('day', $day);
-                // ->with('countdown', $countdown);
+                return view('dashboard', compact('users', 'lead_max', 'closing_max', 'users', 'announcements', 'products', 'all_leads', 'all_spam', 'leads', 'total_lead', 'campaigns', 'client', 'day', 'inputer', 'lead_count', 'closing_count', 'quantity', 'user_count', 'lead_su', 'lead_mo', 'lead_tu', 'lead_we', 'lead_th', 'lead_fr', 'lead_sa', 'closing_su', 'closing_mo', 'closing_tu', 'closing_we', 'closing_th', 'closing_fr', 'closing_sa', 'omset_su', 'omset_mo', 'omset_tu', 'omset_we', 'omset_th', 'omset_fr', 'omset_sa', 'advertising_su', 'advertising_mo', 'advertising_tu', 'advertising_we', 'advertising_th', 'advertising_fr', 'advertising_sa', 'lead_day_count', 'omset_day_count', 'advertising_day_count'),['role'=>$roles])->with('icon',$icons);
             }
         }
     }
