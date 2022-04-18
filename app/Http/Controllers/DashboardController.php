@@ -260,7 +260,7 @@ class DashboardController extends Controller
                 ->with('closing_su', $closing_su)->with('closing_mo', $closing_mo)->with('closing_tu', $closing_tu)->with('closing_we', $closing_we)->with('closing_th', $closing_th)->with('closing_fr', $closing_fr)->with('closing_sa', $closing_sa)
                 ->with('omset_su', $omset_su)->with('omset_mo', $omset_mo)->with('omset_tu', $omset_tu)->with('omset_we', $omset_we)->with('omset_th', $omset_th)->with('omset_fr', $omset_fr)->with('omset_sa', $omset_sa)
                 ->with('advertising_su', $advertising_su)->with('advertising_mo', $advertising_mo)->with('advertising_tu', $advertising_tu)->with('advertising_we', $advertising_we)->with('advertising_th', $advertising_th)->with('advertising_fr', $advertising_fr)->with('advertising_sa', $advertising_sa)
-                ->with('lead_day_count', $lead_day_count)->with('omset_day_count', $omset_day_count)->with('advertising_day_count', $advertising_day_count);
+                ->with('lead_day_count', $lead_day_count)->with('omset_day_count', $omset_day_count)->with('advertising_day_count', $advertising_day_count)->with('day', $day);
                 // ->with('countdown', $countdown);
             }
         }
@@ -1785,9 +1785,11 @@ class DashboardController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $lead_count = Lead::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $today)->count();
         $closing_count = Lead::where('admin_id', auth()->user()->admin_id)->where('status_id', 5)->whereDate('created_at', $today)->count();
+        $quantity = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $today)->sum('quantity');
         return response()->json([
             'lead_count'=> $lead_count,
-            'closing_count' => $closing_count
+            'closing_count' => $closing_count,
+            'quantity' => $quantity
         ], 200);
     }
     public function weeklyWidget(){
@@ -1799,9 +1801,14 @@ class DashboardController extends Controller
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
         ])->count();
+        $quantity = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek(),
+        ])->sum('quantity');
         return response()->json([
             'lead_count'=> $lead_count,
-            'closing_count' => $closing_count
+            'closing_count' => $closing_count,
+            'quantity' => $quantity
         ], 200);
     }
     public function monthlyWidget(){
@@ -1813,9 +1820,14 @@ class DashboardController extends Controller
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
         ])->count();
+        $quantity = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
+            Carbon::now()->startOfMonth(),
+            Carbon::now()->endOfMonth(),
+        ])->sum('quantity');
         return response()->json([
             'lead_count'=> $lead_count,
-            'closing_count' => $closing_count
+            'closing_count' => $closing_count,
+            'quantity' => $quantity
         ], 200);
     }
 }

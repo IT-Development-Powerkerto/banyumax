@@ -134,7 +134,7 @@
 										<form action="/JA-adv" method="GET" class="d-flex">
 										@endif
 											<div class="me-2 d-flex flex-row">
-												<input class="form-control mt-0 form-control-solid" name="date_filter"  id="date_filter" type="date" style="height: 33px;" onchange="submit()">
+												<input class="form-control mt-0 form-control-solid" name="date_filter"  id="date_filter" type="date" style="height: 33px;" value="{{ $day }}" onchange="submit()">
 											</div>
 										</form>
 										<!--begin::Search-->
