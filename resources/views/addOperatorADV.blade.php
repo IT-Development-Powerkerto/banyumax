@@ -108,7 +108,7 @@
 
 																{{--  <input type="text" name="campaign_id" value="{{ $campaigns->id }}" required class="form-control">  --}}
 																<select class="form-control" name="operator_id">
-																	<option>Select Operator</option>
+																	<option hidden>Select Operator</option>
 																	@foreach ($operators as $operator)
 																		<option value="{{ $operator->id }}">
 																			{{ $operator->name }}

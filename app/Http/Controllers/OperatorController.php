@@ -83,17 +83,17 @@ class OperatorController extends Controller
         $name = User::where('admin_id', auth()->user()->admin_id)->where('id', $user_id)->value('name');
         $operatorExists = Operator::where('admin_id', auth()->user()->admin_id)->where('campaign_id', $id)->where('user_id', $user_id)->exists();
         if($operatorExists){
-            return redirect('/campaign')->with('error','Error!, Operator already exists');
+            return redirect(url()->previous())->with('error','Error!, Operator already exists');
         }
-            DB::table('operators')->insert([
-                'admin_id'        => auth()->user()->admin_id,
-                'campaign_id'     => $id,
-                'user_id'         => $user_id,
-                'name'            => $name,
-                'created_at' => Carbon::now()->toDateTimeString(),
-                'updated_at' => Carbon::now()->toDateTimeString(),
-            ]);
-            return redirect('/campaign')->with('success','Successfull! Campaign Added');
+        DB::table('operators')->insert([
+            'admin_id'        => auth()->user()->admin_id,
+            'campaign_id'     => $id,
+            'user_id'         => $user_id,
+            'name'            => $name,
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ]);
+        return redirect(url()->previous())->with('success','Successfull! Operator Added');
     }
 
     /**
@@ -142,6 +142,6 @@ class OperatorController extends Controller
         // dd($operator);
         $operator = Operator::where('id', $operator)->where('campaign_id', $campaign);
         $operator->delete();
-        return redirect('/campaign')->with('success','Successull! Operator Deleted');
+        return redirect(url()->previous())->with('success','Successull! Operator Deleted');
     }
 }
