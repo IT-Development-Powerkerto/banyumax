@@ -28,6 +28,7 @@ $(function(){
     var promo_admin = $("#admin_promotion").val() ?? '';
     var add_promo_admin = $("#add_admin_promotion").val() ?? '';
     var admin = $('#shipping_admin').val() ?? '';
+    var total_payment = $('#total_payment').val() ?? '';
     $('#payment_method, #courier, #quantity, #product_name, #price, #product_promotion_id, #add_product_promotion_id, #shipping_promotion_id, #add_shipping_promotion_id, #admin_promotion_id, #add_admin_promotion_id, #province, #promotion_admin').on('change', function(){
         name = $('#name').val();
         address = $('#address').val();
