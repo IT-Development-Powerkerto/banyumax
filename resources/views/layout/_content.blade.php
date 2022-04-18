@@ -10,22 +10,22 @@
 		</ul>
 		<ul class="nav me-2">
 			<li class="nav-item">
-				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light active fw-bold fs-7 px-4 me-1"
-					id="daily" >Daily</a>
 				{{-- <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light active fw-bold fs-7 px-4 me-1"
-					href="{{route('dashboard.index')}}">Daily</a> --}}
+					id="daily" >Daily</a> --}}
+				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light active fw-bold fs-7 px-4 me-1"
+					href="{{route('dashboard.index')}}">Daily</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4 me-1"
-					id="weekly">Weekly</a>
 				{{-- <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4 me-1"
-					href="{{ route ('weeklydashboard') }}">Weekly</a> --}}
+					id="weekly">Weekly</a> --}}
+				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4 me-1"
+					href="{{ route ('weeklydashboard') }}">Weekly</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4"
-					id="monthly">Monthly</a>
 				{{-- <a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4"
-					href="{{ route ('monthlydashboard') }}">Monthly</a> --}}
+					id="monthly">Monthly</a> --}}
+				<a class="nav-link btn btn-sm btn-color-muted btn-active-color-primary btn-active-light fw-bold fs-7 px-4"
+					href="{{ route ('monthlydashboard') }}">Monthly</a>
 			</li>
 		</ul>
 	</div>

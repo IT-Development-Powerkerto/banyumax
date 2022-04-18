@@ -5,6 +5,7 @@
 										<div class="card-body rounded shadow-sm" style="color:#1961A6; border:1px solid #1961A6">
 											<div class="fw-bold fs-3 mb-2 mt-5">Upselling</div>
 											<div class="fw-bolder fs-3hx mt-n2">{{ ($closing_count == 0) ? 0 : round($quantity / $closing_count, 1) }}</div>
+											{{-- <div class="fw-bolder fs-3hx mt-n2">{{ ($closing_count == 0) ? 0 : round($quantity / $closing_count, 1) }}</div> --}}
 										</div>
                                         <?php
                                             $n=0;

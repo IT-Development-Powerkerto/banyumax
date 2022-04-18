@@ -4,10 +4,10 @@
 										<!--begin::Body-->
 										<div class="card-body rounded shadow-sm" style="color:#1961A6; border:1px solid #1961A6">
 											<div class="fw-bold fs-3 mb-2 mt-5">Closing Rate</div>
-											{{-- <div class="fw-bolder fs-3hx mt-n2">{{($lead_count == 0) ? 0 : round(($closing_count / $lead_count)*100,1)}} %</div> --}}
-											<div class="fw-bolder fs-3hx mt-n2" closing_rate></div>
+											<div class="fw-bolder fs-3hx mt-n2">{{($lead_count == 0) ? 0 : round(($closing_count / $lead_count)*100,1)}} %</div>
+											{{-- <div class="fw-bolder fs-3hx mt-n2" closing_rate></div> --}}
 										</div>
-                                        {{-- <?php
+                                        <?php
                                             $n=0;
                                             $su=0;
                                             $mo=0;
@@ -28,7 +28,7 @@
                                             <input id="{{$sa+=1}} lead_sa" value="{{$lead_sa->where('product_id', $product->id)->count()}}" hidden/>
 
                                             <input id="product {{$n+=1}}" value="{{$product->name}}" hidden/>
-                                        @endforeach --}}
+                                        @endforeach
 										<!--end::Body-->
 									</label>
 									<!--end::Statistics Widget 5-->
