@@ -1408,15 +1408,7 @@ class DashboardController extends Controller
                 return redirect(route('HumanResource.index'));
             }
             else{
-                return view('WeeklyDashboard', compact('users'),['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
-                ->with('products', $products)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('leads', $leads)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('client', $client)->with('day', $day)
-                ->with('inputer', $inputer)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
-                ->with('lead_week1', $lead_week1)->with('lead_week2', $lead_week2)->with('lead_week3', $lead_week3)->with('lead_week4', $lead_week4)
-                ->with('closing_week1', $closing_week1)->with('closing_week2', $closing_week2)->with('closing_week3', $closing_week3)->with('closing_week4', $closing_week4)
-                ->with('omset_week1', $omset_week1)->with('omset_week2', $omset_week2)->with('omset_week3', $omset_week3)->with('omset_week4', $omset_week4)
-                ->with('advertising_week1', $advertising_week1)->with('advertising_week2', $advertising_week2)->with('advertising_week3', $advertising_week3)->with('advertising_week4', $advertising_week4)
-                ->with('lead_week_count', $lead_week_count)->with('omset_week_count', $omset_week_count)->with('advertising_week_count', $advertising_week_count)
-                ->with('closing_week_max', $closing_week_max)->with('lead_week_max', $lead_week_max);
+                return view('WeeklyDashboard', compact('users', 'announcements', 'products', 'all_leads', 'all_spam', 'leads', 'total_lead', 'campaigns', 'client', 'day', 'inputer', 'lead_count', 'closing_count', 'quantity', 'user_count', 'lead_week1', 'lead_week2', 'lead_week3', 'lead_week4', 'closing_week1', 'closing_week2', 'closing_week3', 'closing_week4', 'omset_week1', 'omset_week2', 'omset_week3', 'omset_week4', 'advertising_week1', 'advertising_week2', 'advertising_week3', 'advertising_week4', 'lead_week_count', 'omset_week_count', 'advertising_week_count', 'closing_week_max', 'lead_week_max'),['role'=>$roles])->with('icon',$icons);
                 // ->with('countdown', $countdown);
             }
         }
