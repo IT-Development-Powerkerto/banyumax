@@ -185,7 +185,7 @@ class LeadController extends Controller
         //$total_price = ($request->price * $request->quantity) - $request->promotion_name;
         //$total_payment = $total_price + $request->shipping_price;
 
-    
+
         // $product_name = ;
         $product_id = Product::where('name', $request->product_name)->value('id');
         // dd($product_id);
@@ -273,7 +273,7 @@ class LeadController extends Controller
                         'customer_name'             => $request->name,
                         'customer_number'           => $whatsapp,
                         'customer_address'          => $request->address,
-                        'sale_type'                 => $request->sale_type,
+                        // 'sale_type'                 => $request->sale_type,
                         'product_name'              => $request->product_name,
                         'product_price'             => $request->price,
                         'product_weight'            => $request->weight,
@@ -326,7 +326,7 @@ class LeadController extends Controller
                         'customer_name'             => $request->name,
                         'customer_number'           => $whatsapp,
                         'customer_address'          => $request->address,
-                        'sale_type'                 => $request->sale_type,
+                        // 'sale_type'                 => $request->sale_type,
                         'product_name'              => $request->product_name,
                         'product_price'             => $request->price,
                         'product_weight'            => $request->weight,
