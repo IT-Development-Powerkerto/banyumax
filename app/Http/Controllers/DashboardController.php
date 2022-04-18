@@ -1784,17 +1784,10 @@ class DashboardController extends Controller
     public function dailyWidget(){
         $today = Carbon::now()->format('Y-m-d');
         $lead_count = Lead::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $today)->count();
-        // $lead_count = Lead::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-        //     Carbon::now()->startOfWeek(),
-        //     Carbon::now()->endOfWeek(),
-        // ])->count();
-        // $closing_count = Lead::where('admin_id', auth()->user()->admin_id)->where('status_id', 5)->whereBetween('created_at', [
-        //     Carbon::now()->startOfWeek(),
-        //     Carbon::now()->endOfWeek(),
-        // ])->count();
+        $closing_count = Lead::where('admin_id', auth()->user()->admin_id)->where('status_id', 5)->whereDate('created_at', $today)->count();
         return response()->json([
             'lead_count'=> $lead_count,
-            // 'closing_count' => $closing_count
+            'closing_count' => $closing_count
         ], 200);
     }
     public function weeklyWidget(){
@@ -1817,8 +1810,8 @@ class DashboardController extends Controller
             Carbon::now()->endOfMonth(),
         ])->count();
         $closing_count = Lead::where('admin_id', auth()->user()->admin_id)->where('status_id', 5)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
+            Carbon::now()->startOfMonth(),
+            Carbon::now()->endOfMonth(),
         ])->count();
         return response()->json([
             'lead_count'=> $lead_count,

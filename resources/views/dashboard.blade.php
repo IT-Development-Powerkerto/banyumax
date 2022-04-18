@@ -63,7 +63,7 @@
                     dataType: "JSON",
                     success: function (res) {
                         $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
-                        // $('[closing_count]').text(res.closing_count);
+                        $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
                     }
                 });
             }
@@ -74,7 +74,7 @@
                     dataType: "JSON",
                     success: function (res) {
                         $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
-                        // $('[closing_count]').text(res.closing_count);
+                        $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
                     }
                 });
             }
@@ -85,7 +85,7 @@
                     dataType: "JSON",
                     success: function (res) {
                         $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
-                        // $('[closing_count]').text(res.closing_count);
+                        $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
                     }
                 });
             }
