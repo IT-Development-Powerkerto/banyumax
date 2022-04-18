@@ -1728,19 +1728,7 @@ class DashboardController extends Controller
                 return redirect(route('HumanResource.index'));
             }
             else{
-                return view('MonthlyDashboard', compact('users'),['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
-                ->with('products', $products)->with('leads', $leads)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('client', $client)->with('day', $day)
-                ->with('inputer', $inputer)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
-                ->with('lead_jan', $lead_jan)->with('lead_feb', $lead_feb)->with('lead_mar', $lead_mar)->with('lead_apr', $lead_apr)->with('lead_may', $lead_may)->with('lead_jun', $lead_jun)
-                ->with('lead_jul', $lead_jul)->with('lead_aug', $lead_aug)->with('lead_sep', $lead_sep)->with('lead_okt', $lead_okt)->with('lead_nov', $lead_nov)->with('lead_des', $lead_des)
-                ->with('closing_jan', $closing_jan)->with('closing_feb', $closing_feb)->with('closing_mar', $closing_mar)->with('closing_apr', $closing_apr)->with('closing_may', $closing_may)->with('closing_jun', $closing_jun)
-                ->with('closing_jul', $closing_jul)->with('closing_aug', $closing_aug)->with('closing_sep', $closing_sep)->with('closing_okt', $closing_okt)->with('closing_nov', $closing_nov)->with('closing_des', $closing_des)
-                ->with('omset_jan', $omset_jan)->with('omset_feb', $omset_feb)->with('omset_mar', $omset_mar)->with('omset_apr', $omset_apr)->with('omset_may', $omset_may)->with('omset_jun', $omset_jun)
-                ->with('omset_jul', $omset_jul)->with('omset_aug', $omset_aug)->with('omset_sep', $omset_sep)->with('omset_okt', $omset_okt)->with('omset_nov', $omset_nov)->with('omset_des', $omset_des)
-                ->with('advertising_jan', $advertising_jan)->with('advertising_feb', $advertising_feb)->with('advertising_mar', $advertising_mar)->with('advertising_apr', $advertising_apr)->with('advertising_may', $advertising_may)->with('advertising_jun', $advertising_jun)
-                ->with('advertising_jul', $advertising_jul)->with('advertising_aug', $advertising_aug)->with('advertising_sep', $advertising_sep)->with('advertising_okt', $advertising_okt)->with('advertising_nov', $advertising_nov)->with('advertising_des', $advertising_des)
-                ->with('lead_month_count', $lead_month_count)->with('omset_month_count', $omset_month_count)->with('advertising_month_count', $advertising_month_count)
-                ->with('lead_month_max', $lead_month_max)->with('closing_month_max', $closing_month_max);
+                return view('MonthlyDashboard', compact('users', 'announcements', 'products', 'leads', 'all_leads', 'all_spam', 'total_lead', 'campaigns', 'client', 'day', 'inputer', 'lead_count', 'closing_count', 'quantity', 'user_count', 'lead_jan', 'lead_feb', 'lead_mar', 'lead_apr', 'lead_may', 'lead_jun', 'lead_jul', 'lead_aug', 'lead_sep', 'lead_okt', 'lead_nov', 'lead_des', 'closing_jan', 'closing_feb', 'closing_mar', 'closing_apr', 'closing_may', 'closing_jun', 'closing_jul', 'closing_aug', 'closing_sep', 'closing_okt', 'closing_nov', 'closing_des', 'omset_jan', 'omset_feb', 'omset_mar', 'omset_apr', 'omset_may', 'omset_jun', 'omset_jul', 'omset_aug', 'omset_sep', 'omset_okt', 'omset_nov', 'omset_des', 'advertising_jan', 'advertising_feb', 'advertising_mar', 'advertising_apr', 'advertising_may', 'advertising_jun', 'advertising_jul', 'advertising_aug', 'advertising_sep', 'advertising_okt', 'advertising_nov', 'advertising_des', 'lead_month_count', 'omset_month_count', 'advertising_month_count', 'lead_month_max', 'closing_month_max'),['role'=>$roles])->with('icon',$icons);
                 // ->with('countdown', $countdown);
             }
         }
