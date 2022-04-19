@@ -1149,7 +1149,7 @@ class DashboardController extends Controller
             $operator = Operator::where('user_id', $x->id)->value('user_id');
             if($x->role_id == 5){
                 $announcements = Announcement::where('admin_id', auth()->user()->admin_id)->get();
-                $roles = Role::all();
+                $role = Role::all();
                 $icons = Icon::all();
                 $products = Product::where('admin_id', auth()->user()->admin_id)->get();
                 if($request->date_filter){
@@ -1176,9 +1176,7 @@ class DashboardController extends Controller
                 $my_campaigns = DB::table('operators as o')->where('o.user_id', auth()->user()->id)->join('campaigns as c', 'o.campaign_id', 'c.id' )->whereNull(['c.deleted_at', 'o.deleted_at'])->get();
                 // dd($my_campaigns);
                 $total_lead = DB::table('products')->where('admin_id', auth()->user()->admin_id)->pluck('lead');
-                return view('cs',['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
-                ->with('products', $products)->with('leads', $leads)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('day', $day)
-                ->with('my_campaigns', $my_campaigns);
+                return view('cs', compact('role', 'users', 'announcements', 'products', 'leads', 'all_leads', 'all_spam', 'total_lead', 'campaigns', 'day', 'my_campaigns'))->with('icon',$icons);
             }else{
                 return Redirect::back();
             }
