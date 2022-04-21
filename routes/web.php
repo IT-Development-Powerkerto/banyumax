@@ -79,6 +79,7 @@ Route::post('/update/nonaktive/{user}', [SuperAdminController::class, 'updateNon
 
 Route::get('/dashboard/blog/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
 Route::resource('/dashboard/blog', DashboardPostController::class)->middleware('auth');
+Route::post('/dashboard/importUser', [DashboardController::class, 'importUser'])->name('importUser')->middleware('auth');
 
 Route::resource('/dashboard/categories', AdminCategoryController::class)->except('show')->middleware('admin');
 
