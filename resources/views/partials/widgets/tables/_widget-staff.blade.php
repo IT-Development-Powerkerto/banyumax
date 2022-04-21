@@ -23,11 +23,11 @@
                                                     </script> Staff
                                                 </span>
 											</h3>
-											<div class="card-toolbar mt-n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user">
+											<div class="card-toolbar mt-n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover">
                                                 @if (auth()->user()->paket_id == 1 && $users->where('admin_id', auth()->user()->id)->count() > 51)
 
                                                 @else
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#add-user" class="btn btn-sm btn-light btn-active-primary">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#add-user" class="btn btn-sm btn-light btn-active-primary" title="Click to add a user">
                                                     <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                                                     <span class="svg-icon svg-icon-3">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

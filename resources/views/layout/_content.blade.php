@@ -138,7 +138,7 @@
 		<!--begin::Col-->
 		<div class="col-xl-12 mt-n1">
 
-			@include('partials/widgets/tables/_widget-8')
+			@include('partials/widgets/tables/_widget-lead')
 
 		</div>
 		<!--end::Col-->
@@ -147,7 +147,7 @@
 		<!--begin::Col-->
 		<div class="col-xl-6 mt-n2">
 
-			@include('partials/widgets/tables/_widget-7')
+			@include('partials/widgets/tables/_widget-information')
 
 		</div>
 		<!--end::Col-->
@@ -155,7 +155,7 @@
 		<!--begin::Col-->
 		<div class="col-xl-6 mt-n2">
 
-			@include('partials/widgets/tables/_widget-6')
+			@include('partials/widgets/tables/_widget-product')
 
 		</div>
 
@@ -166,8 +166,8 @@
 
 	<!--begin::Row-->
 	<div class="row gy-5 g-xl-1 mt-n3">
-		@include('partials/widgets/tables/_widget-9')
-		@include('partials/widgets/tables/_widget-11')
+		@include('partials/widgets/tables/_widget-staff')
+		@include('partials/widgets/tables/_widget-announcements')
 	</div>
 	<!--end::Row-->
 
