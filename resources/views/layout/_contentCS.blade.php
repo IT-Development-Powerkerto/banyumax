@@ -8,7 +8,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		@endif
-	
+
 		@if(session()->has('error'))
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
 				{{ session('error') }}
@@ -18,15 +18,15 @@
 		<!--begin::Col-->
 		<div class="col-xl-6">
 
-			@include('partials/widgets/tables/_widget-7')
-			
+			@include('partials/widgets/tables/_widget-information')
+
 		</div>
 		<!--end::Col-->
 
 		<!--begin::Col-->
 		<div class="col-xl-6">
 
-			@include('partials/widgets/tables/_widget-6')
+			@include('partials/widgets/tables/_widget-product')
 
 		</div>
 
