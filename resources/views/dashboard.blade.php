@@ -223,6 +223,13 @@
     });
     </script>
     @endif
+    @if(!empty(Session::get('error_code')) && Session::get('error_code') == 'add-user-excel')
+    <script>
+    $(function() {
+        $('#add-user-excel').modal('show');
+    });
+    </script>
+    @endif
 
     <script>
         function StopTimer(duration, display) {

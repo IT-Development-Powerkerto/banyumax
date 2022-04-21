@@ -20,14 +20,18 @@ class UsersImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         // return response()->json(['test' => 'jalan']);
-        Validator::make($rows->toArray(), [
+        $validator = Validator::make($rows->toArray(), [
             '*.name' => 'required|max:255',
             '*.password' => 'required',
             '*.username' => 'required|unique:users|max:255',
             '*.email' => 'required|unique:users|email:dns',
             '*.phone' => 'required|unique:users',
             '*.role' => 'required'
-        ])->validate();
+        ]);
+        if($validator->fails()){
+            // return back()->with('error','Error! User not been Added')->withInput()->withErrors($validator);
+            return back()->with('error_code', 'add-user-excel')->withErrors($validator);
+        }
         foreach ($rows as $row) {
             User::create([
                 'name' => $row['name'],

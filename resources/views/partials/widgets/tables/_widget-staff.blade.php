@@ -1,28 +1,5 @@
 
 									<!--begin::Tables Widget 9-->
-                                    @if (count($errors) > 0)
-                                    <div class="row">
-                                        <div class="col-md-8 col-md-offset-1">
-                                          <div class="alert alert-danger alert-dismissible">
-                                              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                              <h4><i class="icon fa fa-ban"></i> Error!</h4>
-                                              @foreach($errors->all() as $error)
-                                              {{ $error }} <br>
-                                              @endforeach
-                                          </div>
-                                        </div>
-                                    </div>
-                                    @endif
-                                    @if (Session::has('success'))
-                                        <div class="row">
-                                        <div class="col-md-8 col-md-offset-1">
-                                            <div class="alert alert-success alert-dismissible">
-                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                <h5>{!! Session::get('success') !!}</h5>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    @endif
 									<div class="card card-xxl-stretch mb-5 mb-xl-8">
 										<!--begin::Header-->
 										<div class="card-header border-0 pt-5">
@@ -68,6 +45,15 @@
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
+                                                                    @if (count($errors) > 0)
+                                                                    <div class="row">
+                                                                        <div class="alert alert-danger alert-dismissible">
+                                                                            @foreach($errors->all() as $error)
+                                                                            {{ $error }} <br>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    </div>
+                                                                    @endif
                                                                     <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data">
                                                                         @csrf
                                                                         <input type="file" name="import_user" class="form-control">
