@@ -116,9 +116,21 @@
 																	@endforeach
 																</select>
 															</div>
-														</div>
 
-														{{ csrf_field() }}
+															<div class="col-2">
+																<label for="inputtitle" class="col-form-label">Add Operator</label>
+															</div>
+															<div class="col-10">
+																<select class="form-control select2" id="kt_select2_3" name="param" multiple="multiple">
+																	<option hidden>Select Operator</option>
+																	@foreach ($operators as $operator)
+																		<option value="{{ $operator->id }}">
+																			{{ $operator->name }}
+																		</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
 														<input type="submit" class="btn btn-primary mt-5 float-end me-6" value="Add"/>
 													</form>
 												</div>
@@ -320,11 +332,8 @@
 		<!--begin::Page Custom Javascript(used by this page)-->
 		<script src="assets/js/custom/widgets.js"></script>
 		<!--end::Page Custom Javascript-->
-		<script src="//code.jquery.com/jquery.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
-
-		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -358,19 +367,6 @@
             }
 		});
         </script>
-
-		{{-- <script type="text/javascript">
-			var i = 0;
-			$("#dynamic-ar").click(function () {
-				++i;
-				$("#dynamicAddRemove").append('<tr><td><input type="text" name="addMoreInputFields[' + i +
-					'][subject]" placeholder="Enter subject" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-field">Delete</button></td></tr>'
-					);
-			});
-			$(document).on('click', '.remove-input-field', function () {
-				$(this).parents('tr').remove();
-			});
-		</script> --}}
         <script>
             $(document).ready(function() {
                 $('#product_id').on('change', function() {
@@ -381,19 +377,201 @@
                             type: "GET",
                             data : {"_token":"{{ csrf_token() }}"},
                             dataType: "json",
-                            success:function(data)
+                            success:function(data);
                         });
                     }
                 });
             });
         </script>
-		{{--  <script>
-			$('body').on('click', '#add-operator', function (event) {
-				event.preventDefault();
-				var id = $(this).data('id');
-				$.get('c')
-			})
-		</script>  --}}
+		<script>
+			// Class definition
+			var KTSelect2 = function() {
+			// Private functions
+			var demos = function() {
+			// basic
+			$('#kt_select2_1').select2({
+			placeholder: "Select a state"
+			});
+
+			// nested
+			$('#kt_select2_2').select2({
+			placeholder: "Select a state"
+			});
+
+			// multi select
+			$('#kt_select2_3').select2({
+			placeholder: "Select a operator",
+			});
+
+			// basic
+			$('#kt_select2_4').select2({
+			placeholder: "Select a state",
+			allowClear: true
+			});
+
+			// loading data from array
+			var data = [{
+			id: 0,
+			text: 'Enhancement'
+			}, {
+			id: 1,
+			text: 'Bug'
+			}, {
+			id: 2,
+			text: 'Duplicate'
+			}, {
+			id: 3,
+			text: 'Invalid'
+			}, {
+			id: 4,
+			text: 'Wontfix'
+			}];
+
+			$('#kt_select2_5').select2({
+			placeholder: "Select a value",
+			data: data
+			});
+
+			// loading remote data
+
+			function formatRepo(repo) {
+			if (repo.loading) return repo.text;
+			var markup = "<div class='select2-result-repository clearfix'>" +
+				"<div class='select2-result-repository__meta'>" +
+				"<div class='select2-result-repository__title'>" + repo.full_name + "</div>";
+			if (repo.description) {
+				markup += "<div class='select2-result-repository__description'>" + repo.description + "</div>";
+			}
+			markup += "<div class='select2-result-repository__statistics'>" +
+				"<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> " + repo.forks_count + " Forks</div>" +
+				"<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> " + repo.stargazers_count + " Stars</div>" +
+				"<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> " + repo.watchers_count + " Watchers</div>" +
+				"</div>" +
+				"</div></div>";
+			return markup;
+			}
+
+			function formatRepoSelection(repo) {
+			return repo.full_name || repo.text;
+			}
+
+			$("#kt_select2_6").select2({
+			placeholder: "Search for git repositories",
+			allowClear: true,
+			ajax: {
+				url: "https://api.github.com/search/repositories",
+				dataType: 'json',
+				delay: 250,
+				data: function(params) {
+				return {
+				q: params.term, // search term
+				page: params.page
+				};
+				},
+				processResults: function(data, params) {
+				// parse the results into the format expected by Select2
+				// since we are using custom formatting functions we do not need to
+				// alter the remote JSON data, except to indicate that infinite
+				// scrolling can be used
+				params.page = params.page || 1;
+
+				return {
+				results: data.items,
+				pagination: {
+				more: (params.page * 30) < data.total_count
+				}
+				};
+				},
+				cache: true
+			},
+			escapeMarkup: function(markup) {
+				return markup;
+			}, // let our custom formatter work
+			minimumInputLength: 1,
+			templateResult: formatRepo, // omitted for brevity, see the source of this page
+			templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+			});
+
+			// custom styles
+
+			// tagging support
+			$('#kt_select2_12_1, #kt_select2_12_2, #kt_select2_12_3, #kt_select2_12_4').select2({
+			placeholder: "Select an option",
+			});
+
+			// disabled mode
+			$('#kt_select2_7').select2({
+			placeholder: "Select an option"
+			});
+
+			// disabled results
+			$('#kt_select2_8').select2({
+			placeholder: "Select an option"
+			});
+
+			// limiting the number of selections
+			$('#kt_select2_9').select2({
+			placeholder: "Select an option",
+			maximumSelectionLength: 2
+			});
+
+			// hiding the search box
+			$('#kt_select2_10').select2({
+			placeholder: "Select an option",
+			minimumResultsForSearch: Infinity
+			});
+
+			// tagging support
+			$('#kt_select2_11').select2({
+			placeholder: "Your Destination",
+			tags: true
+			});
+
+			// disabled results
+			$('.kt-select2-general').select2({
+			placeholder: "Select an option"
+			});
+			}
+
+			var modalDemos = function() {
+			$('#kt_select2_modal').on('shown.bs.modal', function () {
+			// basic
+			$('#kt_select2_1_modal').select2({
+				placeholder: "Select a state"
+			});
+
+			// nested
+			$('#kt_select2_2_modal').select2({
+				placeholder: "Select a state"
+			});
+
+			// multi select
+			$('#kt_select2_3_modal').select2({
+				placeholder: "Select a state",
+			});
+
+			// basic
+			$('#kt_select2_4_modal').select2({
+				placeholder: "Select a state",
+				allowClear: true
+			});
+			});
+			}
+
+			// Public functions
+			return {
+			init: function() {
+			demos();
+			modalDemos();
+			}
+			};
+			}();
+
+			// Initialization
+			jQuery(document).ready(function() {
+			KTSelect2.init();
+			});
+		</script>
 	</body>
 	<!--end::Body-->
 </html>
