@@ -104,9 +104,9 @@
 															<div class="col-2">
 																<label for="inputtitle" class="col-form-label">Operator</label>
 															</div>
-															<div class="col-10">
+															{{-- <div class="col-10">
 
-																{{--  <input type="text" name="campaign_id" value="{{ $campaigns->id }}" required class="form-control">  --}}
+																 <input type="text" name="campaign_id" value="{{ $campaigns->id }}" required class="form-control">
 																<select class="form-control" name="operator_id">
 																	<option hidden>Select Operator</option>
 																	@foreach ($operators as $operator)
@@ -119,10 +119,10 @@
 
 															<div class="col-2">
 																<label for="inputtitle" class="col-form-label">Add Operator</label>
-															</div>
+															</div> --}}
 															<div class="col-10">
-																<select class="form-control select2" id="kt_select2_3" name="param" multiple="multiple">
-																	<option hidden>Select Operator</option>
+																<select class="form-control select2" id="kt_select2_3" name="user_id[]" multiple="multiple">
+																	{{-- <option hidden>Select Operator</option> --}}
 																	@foreach ($operators as $operator)
 																		<option value="{{ $operator->id }}">
 																			{{ $operator->name }}

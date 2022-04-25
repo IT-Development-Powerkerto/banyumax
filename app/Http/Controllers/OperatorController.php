@@ -65,6 +65,7 @@ class OperatorController extends Controller
      */
     public function store(Request $request, $id)
     {
+        // ddd($request->all());
         // $rules = [];
         // foreach($request->input('user_id') as $key => $value) {
         //     $rules["user_id.{$key}"] = 'required';
@@ -79,20 +80,23 @@ class OperatorController extends Controller
         // }
         // return response()->json(['error'=>$validator->errors()->all()]);
 
-        $user_id = $request->operator_id;
-        $name = User::where('admin_id', auth()->user()->admin_id)->where('id', $user_id)->value('name');
-        $operatorExists = Operator::where('admin_id', auth()->user()->admin_id)->where('campaign_id', $id)->where('user_id', $user_id)->exists();
-        if($operatorExists){
-            return redirect(url()->previous())->with('error','Error!, Operator already exists');
+        $user_id = collect($request->user_id);
+        // dd($user);
+        foreach ($user_id as $user_id){
+            $name = User::where('admin_id', auth()->user()->admin_id)->where('id', $user_id)->value('name');
+            $operatorExists = Operator::where('admin_id', auth()->user()->admin_id)->where('campaign_id', $id)->where('user_id', $user_id)->exists();
+            if($operatorExists){
+                return redirect(url()->previous())->with('error','Error!, '.$name.' already exists');
+            }
+            DB::table('operators')->insert([
+                'admin_id'        => auth()->user()->admin_id,
+                'campaign_id'     => $id,
+                'user_id'         => $user_id,
+                'name'            => $name,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
         }
-        DB::table('operators')->insert([
-            'admin_id'        => auth()->user()->admin_id,
-            'campaign_id'     => $id,
-            'user_id'         => $user_id,
-            'name'            => $name,
-            'created_at' => Carbon::now()->toDateTimeString(),
-            'updated_at' => Carbon::now()->toDateTimeString(),
-        ]);
         return redirect(url()->previous())->with('success','Successfull! Operator Added');
     }
 
