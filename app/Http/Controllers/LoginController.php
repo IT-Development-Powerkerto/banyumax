@@ -33,19 +33,19 @@ class LoginController extends Controller
             }
             elseif($admin_id == 1){
                 $request->session()->regenerate();
-                return redirect('/superadmin');
+                return redirect()->intended('/superadmin');
             }
             elseif($role_id == 1){
                 $request->session()->regenerate();
-                return redirect('/dashboard');
+                return redirect()->intended('/dashboard');
             }
             elseif($role_id == 4){
                 $request->session()->regenerate();
-                return redirect('/adv');
+                return redirect()->intended('/adv');
             }
             elseif($role_id == 5){
                 $request->session()->regenerate();
-                return redirect('/cs');
+                return redirect()->intended('/cs');
             }
         }
         // elseif (Auth::attempt(['username' => $data['username'], 'password' => $data['password'], 'role_id' => '4'])){
