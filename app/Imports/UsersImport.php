@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Support\Str;
 
 class UsersImport implements ToCollection, WithHeadingRow
 {
@@ -24,7 +25,7 @@ class UsersImport implements ToCollection, WithHeadingRow
             '*.name' => 'required|max:255',
             '*.password' => 'required',
             '*.username' => 'required|unique:users|max:255',
-            '*.email' => 'required|unique:users|email:dns',
+            '*.email' => 'required|unique:users|email',
             '*.phone' => 'required|unique:users',
             '*.role' => 'required'
         ]);
@@ -39,25 +40,23 @@ class UsersImport implements ToCollection, WithHeadingRow
                 'phone' => $row['phone'],
                 'username' => $row['username'],
                 'password' => Hash::make($row['password']),
-                'role_id' => match ($row['role']){
-                    'CEO' => 2,
-                    'Manager' => 3,
-                    'Advertiser' => 4,
-                    'CS' => 5,
-                    'DGM' => 6,
-                    'CWM' => 7,
-                    'IT' => 8,
-                    'Budgeting' => 9,
-                    'Inputer' => 10,
-                    'HR' => 11,
-                    'JA' => 12
+                'role_id' => match (Str::lower($row['role'])){
+                    'ceo' => 2,
+                    'manager' => 3,
+                    'advertiser' => 4,
+                    'cs' => 5,
+                    'dgm' => 6,
+                    'cwm' => 7,
+                    'it' => 8,
+                    'budgeting' => 9,
+                    'inputer' => 10,
+                    'hr' => 11,
+                    'ja' => 12
                 },
                 'admin_id' => auth()->user()->admin_id,
                 'paket_id' => auth()->user()->paket_id,
                 'exp' => auth()->user()->exp,
                 'expired_at' => auth()->user()->expired_at
-
-
             ]);
         }
     }
