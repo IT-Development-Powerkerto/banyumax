@@ -80,7 +80,7 @@ class InputerController extends Controller
             $cs_inputers = CsInputer::where('admin_id', auth()->user()->admin_id)->where('inputer_id', auth()->user()->id)->get();
             $name_cs_inputers = User::where('admin_id', auth()->user()->admin_id)->where('id', $cs_inputers->implode('cs_id'))->value('name');
             // dd($cs_inputers);
-            return view('inputer.Dashboard', compact(['leads', 'announcements', 'inputers', 'all_inputers', 'cs', 'cs_inputers', 'name_cs_inputers', 'promotions']));
+            return view('inputer.Dashboard', compact(['leads', 'announcements', 'inputers', 'all_inputers', 'cs', 'cs_inputers', 'name_cs_inputers', 'promotions', 'day']));
         }else if(Auth::user()->role_id == 12){
             if($request->date_filter){
                 $day = Carbon::parse($request->date_filter)->format('Y-m-d');
