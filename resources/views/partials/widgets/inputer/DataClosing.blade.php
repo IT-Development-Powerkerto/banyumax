@@ -64,7 +64,7 @@
 												</div>
 												<form action="/inputer" method="GET" class="d-flex">
 													<div class="me-2 d-flex flex-row">
-														<input class="form-control text-muted mt-0" name="date_filter" id="date_filter" type="date" style="height: 33px;" onchange="submit()">
+														<input class="form-control text-muted mt-0" name="date_filter" id="date_filter" type="date" style="height: 33px;" value="{{ $day }}" onchange="submit()">
 													</div>
 												</form>
 											</div>
