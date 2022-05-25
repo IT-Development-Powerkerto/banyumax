@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
@@ -1818,5 +1819,10 @@ class DashboardController extends Controller
             'closing_count' => $closing_count,
             'quantity' => $quantity
         ], 200);
+    }
+    public function template_user()
+    {
+        return Response::download('public/assets/file/add_user_template.xlsx');
+
     }
 }

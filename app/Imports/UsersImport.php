@@ -43,7 +43,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                 'role_id' => match (Str::lower($row['role'])){
                     'ceo' => 2,
                     'manager' => 3,
-                    'advertiser' => 4,
+                    'adv' => 4,
                     'cs' => 5,
                     'dgm' => 6,
                     'cwm' => 7,
