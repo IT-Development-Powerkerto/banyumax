@@ -45,11 +45,11 @@ class WarehouseController extends Controller
         $p = explode('_', $request->province);
         $province_id = $p[0];
         $province = $p[1];
-        
+
         $c = explode('_', $request->city);
         $city_id = $c[0];
         $city = $c[1];
-        
+
         $s = explode('_', $request->subdistrict);
         $subdistrict_id = $s[0];
         $subdistrict = $s[1];
@@ -116,8 +116,8 @@ class WarehouseController extends Controller
         $all_subdistrict = Http::withHeaders(['key' => 'c2993a8c77565268712ef1e3bfb798f2'])->get('https://pro.rajaongkir.com/api/subdistrict?city='.$city_id);
         $all_subdistrict = json_decode($all_subdistrict, true);
         $all_subdistrict = $all_subdistrict['rajaongkir']['results'];
-        $warehouse = Warehouse::findOrFail($id);
-        
+        $warehouse = Warehouse::whereId($id)->first();
+
         return view('warehouse.WarehouseEdit', compact('warehouse', 'provinces', 'all_city', 'all_subdistrict'));
     }
 
