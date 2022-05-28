@@ -29,8 +29,6 @@
 												<div class="menu-item px-5">
 													<a href="{{ route('dashboard.index') }}" class="menu-link px-5">Dashboard</a>
 													<a href="{{ route('users.index') }}" class="menu-link px-5">My Profile</a>
-													<!--<a href="{{ route('warehouse.index') }}" class="menu-link px-5">Warehouse</a>-->
-													<!--<a href="{{ route('courier.index') }}" class="menu-link px-5">Courier</a>-->
 												</div>
 												<!--end::Menu item-->
 												<!--begin::Menu separator-->

@@ -1,4 +1,4 @@
-										
+
 									<!--begin::Container-->
 									<div id="kt_content_container" class="container-xxl" >
 										<div class="mt-10">
@@ -14,8 +14,8 @@
 												{{ session('error') }}
 												<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 											</div>
-											@endif	
-										</div>				
+											@endif
+										</div>
 										<!--begin::Tables Widget 9-->
 										<div class="card card-xl-stretch mt-12 mb-5 mb-xl-8">
 											<!--begin::Header-->
@@ -47,97 +47,59 @@
 																	<div class="modal-body">
 																		@csrf
 																		<!--begin::Input group-->
-																		<div class="row row-cols-1 row-cols-md-3 row-cols-lg-1 row-cols-xl-3 g-9 d-flex justify-content-center" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button='true']" required>
-																			<!--begin::Col-->
-																			<div class="col">
-																				<!--begin::Option-->
-																				<label class="btn btn-outline btn-outline-dashed btn-outline-default d-flex text-start p-6" data-kt-button="true">
-																					<!--begin::Radio-->
-																					<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																						<input class="form-check-input" type="checkbox" name="status" value="active">
-																					</span>
-																					<!--end::Radio-->
-																					<!--begin::Info-->
-																					<span class="ms-5">
-																						<label class="fs-6 fw-bolder text-primary">JNE OK</label>
-																					</span>
-																					<!--end::Info-->
-																				</label>
-																				<!--end::Option-->
+																		<div class="d-flex flex-column mb-1 fv-row">
+																			<!--begin::Label-->
+																			<label class="required fs-6 fw-bold form-label mb-2">Image</label>
+																			<!--end::Label-->
+																			<div class="col-lg-5 col-xl-6">
+																				{{-- <!--begin::Label-->
+																				<label class="col-lg-4 col-form-label fw-bold fs-6">Avatar</label>
+																				<!--end::Label--> --}}
+																				<!--begin::Col-->
+																				<div class="col-lg-8">
+																					<!--begin::Image input-->
+																					<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(assets/mediaTwo/ImagePhoto.png)">
+																						<!--begin::Preview existing avatar-->
+																						<div class="image-input-wrapper w-125px h-125px" style="background-image: url(assets/mediaTwo/ImagePhoto.png)"></div>
+																						<!--end::Preview existing avatar-->
+																						<!--begin::Label-->
+																						<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+																							<i class="bi bi-pencil-fill fs-7"></i>
+																							<!--begin::Inputs-->
+																							<input type="file" class="form-control-file" id="image" name="image" accept=".png, .jpg, .jpeg" >
+																							<input type="hidden" name="avatar_remove" />
+																							@error('image')
+																							<div class="text-danger">{{ $message }}</div>
+																							@enderror
+																							{{--  <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+																							<input type="hidden" name="avatar_remove" />  --}}
+																							<!--end::Inputs-->
+																						</label>
+																						<!--end::Label-->
+																						<!--begin::Cancel-->
+																						<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+																							<i class="bi bi-x fs-2"></i>
+																						</span>
+																						<!--end::Cancel-->
+																						<!--begin::Remove-->
+																						<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+																							<i class="bi bi-x fs-2"></i>
+																						</span>
+																						<!--end::Remove-->
+																					</div>
+																					<!--end::Image input-->
+																				</div>
+																				<!--end::Col-->
 																			</div>
-																			<!--end::Col-->
-																			<!--begin::Col-->
-																			<div class="col">
-																				<!--begin::Option-->
-																				<label class="btn btn-outline btn-outline-dashed btn-outline-default d-flex text-start p-6" data-kt-button="true">
-																					<!--begin::Radio-->
-																					<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																						<input class="form-check-input" type="checkbox" name="status" value="inactive">
-																					</span>
-																					<!--end::Radio-->
-																					<!--begin::Info-->
-																					<span class="ms-5">
-																						<label class="fs-6 fw-bolder text-primary">JNEREG</label>
-																					</span>
-																					<!--end::Info-->
-																				</label>
-																				<!--end::Option-->
-																			</div>
-																			<!--end::Col-->
-																			<!--begin::Col-->
-																			<div class="col">
-																				<!--begin::Option-->
-																				<label class="btn btn-outline btn-outline-dashed btn-outline-default d-flex text-start p-6" data-kt-button="true">
-																					<!--begin::Radio-->
-																					<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																						<input class="form-check-input" type="checkbox" name="status" value="inactive">
-																					</span>
-																					<!--end::Radio-->
-																					<!--begin::Info-->
-																					<span class="ms-5">
-																						<label class="fs-6 fw-bolder text-primary">Ninja</label>
-																					</span>
-																					<!--end::Info-->
-																				</label>
-																				<!--end::Option-->
-																			</div>
-																			<!--end::Col-->
-																			<!--begin::Col-->
-																			<div class="col">
-																				<!--begin::Option-->
-																				<label class="btn btn-outline btn-outline-dashed btn-outline-default d-flex text-start p-6" data-kt-button="true">
-																					<!--begin::Radio-->
-																					<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																						<input class="form-check-input" type="checkbox" name="status" value="inactive">
-																					</span>
-																					<!--end::Radio-->
-																					<!--begin::Info-->
-																					<span class="ms-5">
-																						<label class="fs-6 fw-bolder text-primary">SiCepat</label>
-																					</span>
-																					<!--end::Info-->
-																				</label>
-																				<!--end::Option-->
-																			</div>
-																			<!--end::Col-->
-																			<!--begin::Col-->
-																			<div class="col">
-																				<!--begin::Option-->
-																				<label class="btn btn-outline btn-outline-dashed btn-outline-default d-flex text-start p-6" data-kt-button="true">
-																					<!--begin::Radio-->
-																					<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																						<input class="form-check-input" type="checkbox" name="status" value="inactive">
-																					</span>
-																					<!--end::Radio-->
-																					<!--begin::Info-->
-																					<span class="ms-5">
-																						<label class="fs-6 fw-bolder text-primary">POS</label>
-																					</span>
-																					<!--end::Info-->
-																				</label>
-																				<!--end::Option-->
-																			</div>
-																			<!--end::Col-->
+                                                                        </div>
+																		<!--end::Input group-->
+																		<div class="mb-3">
+																			<label for="percentage_admin" class="form-label">Percentage Admin</label>
+																			<input type="text" value="" class="form-control" id="percentage_admin" name="percentage_admin" required>
+																		</div>
+																		<div class="mb-3">
+																			<label for="name" class="form-label">Courier Name</label>
+																			<input type="text" value="" class="form-control" id="name" name="name">
 																		</div>
 																	</div>
 																	<div class="modal-footer">
@@ -215,7 +177,7 @@
 																	</td>
 																</tr>
 															@endforeach
-															
+
 														</tbody>
 														<!--end::Table body-->
 													</table>
@@ -227,4 +189,3 @@
 										</div>
 										<!--end::Tables Widget 9-->
 									</div>
-										

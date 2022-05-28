@@ -17,7 +17,19 @@ class CourierController extends Controller
     public function index()
     {
         $couriers = Courier::all();
-        return view('courier/Dashboard', compact('couriers'));
+        $x = auth()->user();
+        if($x->admin_id == 2){
+            return view('courier/Dashboard', compact('couriers'));
+        }
+        else if($x->role_id == 5){
+            return view('courier/DashboardCS', compact('couriers'));
+        }
+        else if($x->role_id == 4){
+            return view('courier/DashboardADV', compact('couriers'));
+        }
+        else if($x->role_id == 12){
+            return view('courier/DashboardJA', compact('couriers'));
+        }
     }
 
     /**
@@ -109,7 +121,19 @@ class CourierController extends Controller
             'name' => $request->name,
             'image' => $image,
         ]);
-        return redirect('courier')->with('success', 'Successfull! Courier Edited');
+        $x = auth()->user();
+        if($x->admin_id == 2){
+            return view('courier')->with('success', 'Successfull! Courier Edited');
+        }
+        else if($x->role_id == 5){
+            return view('courier')->with('success', 'Successfull! Courier Edited');
+        }
+        else if($x->role_id == 4){
+            return view('courier')->with('success', 'Successfull! Courier Edited');
+        }
+        else if($x->role_id == 12){
+            return view('courier')->with('success', 'Successfull! Courier Edited');
+        }
     }
 
     /**

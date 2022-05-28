@@ -54,12 +54,18 @@
                                                                         </div>
                                                                     </div>
                                                                     @endif
-                                                                    <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data">
-                                                                        @csrf
-                                                                        <input type="file" name="import_user" class="form-control">
-                                                                        <br>
-                                                                        <button class="btn btn-success">Submit</button>
-                                                                    </form>
+                                                                    <div class="row">
+
+                                                                        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data">
+                                                                            @csrf
+                                                                            <input type="file" name="import_user" class="form-control">
+                                                                            <br>
+                                                                            <button class="btn btn-success">Submit</button>
+                                                                        </form>
+                                                                        <form class="d-flex" action="{{ route('template_user') }}" method="GET" enctype="multipart/form-data">
+                                                                            <button class="btn btn-success">Download Template</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
