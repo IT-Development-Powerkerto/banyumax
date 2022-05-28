@@ -1,4 +1,57 @@
 $(function(){
+    function shippingPromo(id){
+        return $.parseJSON(
+            $.ajax({
+                url: "get_shipping_promotion/"+id,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function(data){
+                    // console.log(data);
+                    // $("#product_promotion").val(parseInt(data.product_promotion));
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            }).responseText
+        );
+    }
+
+    function productPromo(id){
+        return $.parseJSON(
+            $.ajax({
+                url: "get_product_promotion/"+id,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function(data){
+                    // console.log(data);
+                    // $("#product_promotion").val(parseInt(data.product_promotion));
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            }).responseText
+        );
+    }
+
+    function adminPromo(id){
+        return $.parseJSON(
+            $.ajax({
+                url: "get_admin_promotion/"+id,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function(data){
+                    // console.log(data);
+                    // $("#admin_promotion").val(parseInt(data.admin_promotion));
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            }).responseText
+        );
+    }
 
     $('#payment_method, #courier, #quantity, #product_name, #price, #product_promotion_id, #add_product_promotion_id, #shipping_promotion_id, #add_shipping_promotion_id, #admin_promotion_id, #add_admin_promotion_id, #province, #promotion_admin').on('change', function(){
         var name = $('#name').val();
@@ -24,21 +77,23 @@ $(function(){
         var total_price = (parseInt(price) * parseInt(quantity));
 
         if(product_promotion_id){
-            var pp = $.parseJSON(
-                $.ajax({
-                    url: "get_product_promotion/"+product_promotion_id,
-                    type: "GET",
-                    dataType: "json",
-                    async: false,
-                    success: function(data){
-                        // console.log(data);
-                        // $("#product_promotion").val(parseInt(data.product_promotion));
-                    },
-                    error: function(err){
-                        console.log(err);
-                    }
-                }).responseText
-            );
+            // var pp = $.parseJSON(
+            //     $.ajax({
+            //         url: "get_product_promotion/"+product_promotion_id,
+            //         type: "GET",
+            //         dataType: "json",
+            //         async: false,
+            //         success: function(data){
+            //             // console.log(data);
+            //             // $("#product_promotion").val(parseInt(data.product_promotion));
+            //         },
+            //         error: function(err){
+            //             console.log(err);
+            //         }
+            //     }).responseText
+            // );
+            var pp = productPromo(product_promotion_id);
+            // console.log('pp'+pp);
             if(pp.product_promotion_percent == 0 && pp.product_promotion == 0){
                 var promo_product = 0;
             }else if(pp.product_promotion_percent != 0 && pp.product_promotion == 0){
@@ -66,21 +121,22 @@ $(function(){
             $('#total_price').val(total_price);
         }
         if(add_product_promotion_id){
-            var app = $.parseJSON(
-                $.ajax({
-                    url: "get_product_promotion/"+add_product_promotion_id,
-                    type: "GET",
-                    dataType: "json",
-                    async: false,
-                    success: function(data){
-                        // console.log(data);
-                        // $("#product_promotion").val(parseInt(data.product_promotion));
-                    },
-                    error: function(err){
-                        console.log(err);
-                    }
-                }).responseText
-            );
+            // var app = $.parseJSON(
+            //     $.ajax({
+            //         url: "get_product_promotion/"+add_product_promotion_id,
+            //         type: "GET",
+            //         dataType: "json",
+            //         async: false,
+            //         success: function(data){
+            //             // console.log(data);
+            //             // $("#product_promotion").val(parseInt(data.product_promotion));
+            //         },
+            //         error: function(err){
+            //             console.log(err);
+            //         }
+            //     }).responseText
+            // );
+            var app = productPromo(add_product_promotion_id);
             if(app.product_promotion_percent == 0 && app.product_promotion == 0){
                 var add_promo_product = 0;
             }else if(app.product_promotion_percent != 0 && app.product_promotion == 0){
@@ -110,21 +166,23 @@ $(function(){
         console.log('addition promo: '+add_promo_product);
         console.log('total price: '+total_price);
         if(shipping_promotion_id){
-            var sp = $.parseJSON(
-                $.ajax({
-                    url: "get_shipping_promotion/"+shipping_promotion_id,
-                    type: "GET",
-                    dataType: "json",
-                    async: false,
-                    success: function(data){
-                        // console.log(data);
-                        // $("#shipping_promotion").val(parseInt(data.shipping_promotion));
-                    },
-                    error: function(err){
-                        console.log(err);
-                    }
-                }).responseText
-            );
+            // var sp = $.parseJSON(
+            //     $.ajax({
+            //         url: "get_shipping_promotion/"+shipping_promotion_id,
+            //         type: "GET",
+            //         dataType: "json",
+            //         async: false,
+            //         success: function(data){
+            //             // console.log(data);
+            //             // $("#shipping_promotion").val(parseInt(data.shipping_promotion));
+            //         },
+            //         error: function(err){
+            //             console.log(err);
+            //         }
+            //     }).responseText
+            // );
+            var sp = shippingPromo(shipping_promotion_id);
+            console.log('sp'+sp.shipping_promotion);
             if(sp.shipping_promotion_percent == 0 && sp.shipping_promotion == 0){
                 var promo_ongkir = 0;
             }else if(sp.shipping_promotion_percent != 0 && sp.shipping_promotion == 0){
@@ -149,21 +207,22 @@ $(function(){
             $("#shipping_promotion").val(promo_ongkir);
         }
         if(add_shipping_promotion_id){
-            var asp = $.parseJSON(
-                $.ajax({
-                    url: "get_shipping_promotion/"+add_shipping_promotion_id,
-                    type: "GET",
-                    dataType: "json",
-                    async: false,
-                    success: function(data){
-                        // console.log(data);
-                        // $("#shipping_promotion").val(parseInt(data.shipping_promotion));
-                    },
-                    error: function(err){
-                        console.log(err);
-                    }
-                }).responseText
-            );
+            // var asp = $.parseJSON(
+            //     $.ajax({
+            //         url: "get_shipping_promotion/"+add_shipping_promotion_id,
+            //         type: "GET",
+            //         dataType: "json",
+            //         async: false,
+            //         success: function(data){
+            //             // console.log(data);
+            //             // $("#shipping_promotion").val(parseInt(data.shipping_promotion));
+            //         },
+            //         error: function(err){
+            //             console.log(err);
+            //         }
+            //     }).responseText
+            // );
+            var asp = shippingPromo(add_shipping_promotion_id);
             if(asp.shipping_promotion_percent == 0 && asp.shipping_promotion == 0){
                 var add_promo_ongkir = 0;
             }else if(asp.shipping_promotion_percent != 0 && asp.shipping_promotion == 0){
@@ -229,21 +288,22 @@ $(function(){
         }
 
         if(admin_promotion_id){
-            var ap = $.parseJSON(
-                $.ajax({
-                    url: "get_admin_promotion/"+admin_promotion_id,
-                    type: "GET",
-                    dataType: "json",
-                    async: false,
-                    success: function(data){
-                        // console.log(data);
-                        // $("#admin_promotion").val(parseInt(data.admin_promotion));
-                    },
-                    error: function(err){
-                        console.log(err);
-                    }
-                }).responseText
-            );
+            // var ap = $.parseJSON(
+            //     $.ajax({
+            //         url: "get_admin_promotion/"+admin_promotion_id,
+            //         type: "GET",
+            //         dataType: "json",
+            //         async: false,
+            //         success: function(data){
+            //             // console.log(data);
+            //             // $("#admin_promotion").val(parseInt(data.admin_promotion));
+            //         },
+            //         error: function(err){
+            //             console.log(err);
+            //         }
+            //     }).responseText
+            // );
+            var ap = adminPromo(admin_promotion_id);
             if(ap.admin_promotion_percent == 0 && ap.admin_promotion == 0){
                 var promo_admin = 0;
             }else if(ap.admin_promotion_percent != 0 && ap.admin_promotion == 0){
@@ -268,21 +328,22 @@ $(function(){
             $("#admin_promotion").val(promo_admin);
         }
         if(add_admin_promotion_id){
-            var aap = $.parseJSON(
-                $.ajax({
-                    url: "get_admin_promotion/"+add_admin_promotion_id,
-                    type: "GET",
-                    dataType: "json",
-                    async: false,
-                    success: function(data){
-                        // console.log(data);
-                        // $("#admin_promotion").val(parseInt(data.admin_promotion));
-                    },
-                    error: function(err){
-                        console.log(err);
-                    }
-                }).responseText
-            );
+            // var aap = $.parseJSON(
+            //     $.ajax({
+            //         url: "get_admin_promotion/"+add_admin_promotion_id,
+            //         type: "GET",
+            //         dataType: "json",
+            //         async: false,
+            //         success: function(data){
+            //             // console.log(data);
+            //             // $("#admin_promotion").val(parseInt(data.admin_promotion));
+            //         },
+            //         error: function(err){
+            //             console.log(err);
+            //         }
+            //     }).responseText
+            // );
+            var aap = adminPromo(add_admin_promotion_id);
             if(aap.admin_promotion_percent == 0 && aap.admin_promotion == 0){
                 var add_promo_admin = 0;
             }else if(aap.admin_promotion_percent != 0 && aap.admin_promotion == 0){
