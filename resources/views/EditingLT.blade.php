@@ -266,9 +266,12 @@
                                                         @if ($lead->inputer == null)
                                                             <select class="form-control" name="warehouse" id="warehouse" >
                                                                 <option value="" hidden>Warehouse</option>
-                                                                <option value="Cilacap" required>Cilacap</option>
+                                                                {{-- <option value="Cilacap" required>Cilacap</option>
                                                                 <option value="Kosambi" required>Kosambi</option>
-                                                                <option value="Tandes.Sby" required>Tandes.Sby</option>
+                                                                <option value="Tandes.Sby" required>Tandes.Sby</option> --}}
+                                                                @foreach ($warehouses as $warehouse)
+                                                                    <option value="{{ $warehouse->subdistrict_id }}">{{ $warehouse->name }}</option>
+                                                                @endforeach
                                                             </select>
 
                                                         @else
