@@ -11,27 +11,27 @@ $(function(){
 		});
 		$('#product_promotion_id').empty();
 		$('#product_promotion_id').append(`<option hidden>Select Promotion</option>`);
-		$('#product_promotion_id').append(`<option value="">Not Have Promotion</option>`);
+		$('#product_promotion_id').append(`<option value="">Without Promotion</option>`);
 
 		$('#add_product_promotion_id').empty();
 		$('#add_product_promotion_id').append(`<option hidden>Select Promotion</option>`);
-		$('#add_product_promotion_id').append(`<option value="">Not Have Promotion</option>`);
+		$('#add_product_promotion_id').append(`<option value="">Without Promotion</option>`);
 
 		$('#shipping_promotion_id').empty();
 		$('#shipping_promotion_id').append(`<option hidden>Select Promotion</option>`);
-		$('#shipping_promotion_id').append(`<option value="">Not Have Promotion</option>`);
+		$('#shipping_promotion_id').append(`<option value="">Without Promotion</option>`);
 
 		$('#add_shipping_promotion_id').empty();
 		$('#add_shipping_promotion_id').append(`<option hidden>Select Promotion</option>`);
-		$('#add_shipping_promotion_id').append(`<option value="">Not Have Promotion</option>`);
+		$('#add_shipping_promotion_id').append(`<option value="">Without Promotion</option>`);
 
 		$('#admin_promotion_id').empty();
 		$('#admin_promotion_id').append(`<option hidden>Select Promotion</option>`);
-		$('#admin_promotion_id').append(`<option value="">Not Have Promotion</option>`);
+		$('#admin_promotion_id').append(`<option value="">Without Promotion</option>`);
 
 		$('#add_admin_promotion_id').empty();
 		$('#add_admin_promotion_id').append(`<option hidden>Select Promotion</option>`);
-		$('#add_admin_promotion_id').append(`<option value="">Not Have Promotion</option>`);
+		$('#add_admin_promotion_id').append(`<option value="">Without Promotion</option>`);
 		$.ajax({
 			url: "get_promotion_list/"+product,
 			type: "GET",

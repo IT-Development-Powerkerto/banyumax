@@ -163,7 +163,7 @@
 												<label class="col-lg-1 col-form-label text-lg-right mt-8">Promotion</label>
 												<div class="col-lg-3 mt-8">
 													<div class="input-group">
-														<label type="text" class="form-control">{{$inputers->promotion->promotion_name ?? 'Not Have Promotion'}}</label>
+														<label type="text" class="form-control">{{$inputers->promotion->promotion_name ?? 'Without Promotion'}}</label>
 														<div class="input-group-append"><span class="input-group-text"><i class="las la-percent" style="font-size: 24px"></i></span></div>
 													</div>
 												</div>

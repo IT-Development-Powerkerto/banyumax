@@ -101,7 +101,7 @@
 																	<div class="d-flex align-items-center">
 																		<div class="d-flex justify-content-start flex-column">
 																			<a href="{{ route('viewdata',['id' => $inputer->id]) }}" class="text-dark fw-normal fs-6 text-hover-primary mb-2">
-																				{{$inputer['customer_address']}} / CS {{$inputer->lead->user['name']}} / ADV {{$inputer->lead['advertiser']}} / JA Hanif / {{$inputer['product_name']}} {{$inputer['quantity']}} box / {{$inputer['total_price']+$inputer['shipping_price']}} / {{$inputer['product_promotion'] + $inputer['shipping_promotion']}} / {{ $inputer->promotion['promotion_name'] ?? 'Not Have Promotion'}}
+																				{{$inputer['customer_address']}} / CS {{$inputer->lead->user['name']}} / ADV {{$inputer->lead['advertiser']}} / JA Hanif / {{$inputer['product_name']}} {{$inputer['quantity']}} box / {{$inputer['total_price']+$inputer['shipping_price']}} / {{$inputer['product_promotion'] + $inputer['shipping_promotion']}} / {{ $inputer->promotion['promotion_name'] ?? 'Without Promotion'}}
 																			</a>
 																		</div>
 																	</div>
