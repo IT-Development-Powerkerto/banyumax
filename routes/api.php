@@ -77,19 +77,22 @@ Route::middleware('auth:api')->group(function(){
 
 //Midtrans API
 Route::group(['prefix'=>'payment', 'as'=>'payment.'], function() {
-    Route::get('/', function(Request $request) {
-        return response()->json('iniiii', 200);
-    });
-    Route::post('/token', function(Request $request) {
+    Route::post('token', function(Request $request) {
         $midtrans = new MidtransService();
         return response()->json($midtrans->getSnapToken($request->trxData), 200);
     });
-    Route::get('/orderid', function() {
+    Route::get('orderid', function() {
         return response()->json("BMX-ORD/".\Illuminate\Support\Carbon::now()->timestamp, 200);
     });
-    Route::post('/update', function(Request $request) {
+    Route::post('update', function(Request $request) {
         $payment = Payment::where('transaction_id', $request->transaction_id)->first();
-        $payment->transaction_status = $request->transaction_status;
+        if($request->transaction_status == 'settlement') {
+            $payment->transaction_status = "success";
+        }else if($request->transaction_status == 'expired') {
+            $payment->transaction_status = "failed";
+        }else {
+            $payment->transaction_status = "pending";
+        }
         $payment->save();
         return response()->json("OK", 200);
     });

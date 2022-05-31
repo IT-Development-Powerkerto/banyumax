@@ -75,7 +75,7 @@ class RegisterController extends Controller
         $user->created_at = Carbon::now()->toDateTimeString();
         $user->updated_at = Carbon::now()->toDateTimeString();
         $user->save();
-
+        
         $user_id = User::orderBy('id', 'DESC')->value('id');
         DB::table('users')->where('id', $user_id)->update([
             'admin_id' => $user_id,

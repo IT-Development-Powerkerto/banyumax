@@ -81,6 +81,24 @@ var KTCreateAccount = function () {
 		});
 	}
 
+	var successCallback = function(payResult, data) {
+	    $.ajax({
+			url: 'https://app.banyumax.id/user-register',
+			method: 'POST',
+			data: {
+				_token: data.find(element => element["name"] == "_token")["value"],
+				trxData: data,
+				paymentData: payResult
+			},
+			success: function(result) {
+			    formSubmitButton.removeAttribute('data-kt-indicator');
+		        formSubmitButton.disabled = false;
+				sessionStorage.setItem('success', 'Register Success!');
+				window.location.href = "/login";
+			}
+		});
+	}
+
 	var handleForm = function() {
 		// console.log("HandleForm init")
 		formSubmitButton.addEventListener('click', function (e) {
@@ -154,7 +172,7 @@ var KTCreateAccount = function () {
 					 */
 
 					$.ajax({
-						url: 'https://app.banyumax.id/public/api/payment/orderid',
+						url: '/api/payment/orderid',
 						method: 'GET',
 						dataType: 'json',
 						success: function(orderIdResult) {
@@ -181,15 +199,14 @@ var KTCreateAccount = function () {
 								},
 								dataType: 'json',
 								success: function(result) {
-									// console.log("Udah sampe sini nih")
 									window.snap.pay(result, {
 										onSuccess: function(payResult) {
-											console.log(payResult);
-											// noncashCallback(payResult);
+											// console.log(payResult);
+											successCallback(payResult, data);
 										},
 										onPending: function(payResult) {
-											console.log(payResult);
-											// noncashCallback(payResult);
+											// console.log(payResult);
+											successCallback(payResult, data);
 										}, 
 										onClose: function(payResult) {
 											console.log(payResult); 
