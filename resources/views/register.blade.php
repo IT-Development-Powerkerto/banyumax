@@ -474,7 +474,6 @@ License: For each use you must have a valid license purchased only from above li
 		<!--end::Global Javascript Bundle-->
         <script>
             $(document).ready(function() {
-
                 Inputmask({
                     mask: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[.*{2,6}][.*{1,2}]",
                     greedy: false,
@@ -490,64 +489,20 @@ License: For each use you must have a valid license purchased only from above li
                         }
                     }
                 }).mask("#email");
-
-                // let parameter = {
-                //     "transaction_details": {
-                //         "order_id": "BMX-ORD/{{ \Illuminate\Support\Carbon::now()->timestamp }}",
-                //         "gross_amount": 10000
-                //     },
-                //     "credit_card":{
-                //         "secure" : true
-                //     },
-                //     "customer_details": {
-                //         "first_name": "budi",
-                //         "last_name": "pratama",
-                //         "email": "budi.pra@example.com",
-                //         "phone": "08111222333"
-                //     }
-                // };
-
-                // $("#submitButton").on('click', function() {
-                //     console.log($('#register').serializeArray());
-                // });
-
-                // $.ajax({
-                //     url: '{{ url("api/payment/token") }}',
-                //     method: 'POST',
-                //     data: {
-                //         _token: '{{ csrf_token() }}',
-                //         trxData: parameter,
-                //     },
-                //     dataType: 'json',
-                //     success: function(result) {
-                //         console.log("Udah sampe sini nih")
-                //         window.snap.pay(result
-                //         // , {
-                //         //     onSuccess: function(payResult) {
-                //         //         console.log(payResult);
-                //         //         // noncashCallback(payResult);
-                //         //     },
-                //         //     onPending: function(payResult) {
-                //         //         console.log(payResult);
-                //         //         // noncashCallback(payResult);
-                //         //     }, 
-                //         //     onClose: function(payResult) {
-                //         //         console.log(payResult); 
-                //         //         // submitButton.removeAttr("data-kt-indicator");
-                //         //         // submitButton.disabled = !1;
-                //         //     }
-                //         // }
-                //         );
-                //     }
-                // });
             });
         </script>
 		<!--begin::Page Custom Javascript(used by this page)-->
 		<script src="assets/js/custom/modals/create-account.js"></script>
 		<!--end::Page Custom Javascript-->
         <script type="text/javascript"
+        @if(env('MT_MODE') == 'sandbox')
         src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ env('MT_CLIENT_KEY') }}"></script>
+        data-client-key="{{ env('MT_SBX_CLIENT_KEY') }}"
+        @else
+        src="https://app.midtrans.com/snap/snap.js"
+        data-client-key="{{ env('MT_CLIENT_KEY') }}"
+        @endif
+        ></script>
         
 		<!--end::Javascript-->
 	</body>
