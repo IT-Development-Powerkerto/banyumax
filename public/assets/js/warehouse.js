@@ -10,7 +10,7 @@ $(function(){
                     $('#city').empty();
                     $.each(data, function(key, value){
                         // $('#city').append('<option value="'+value.city_id+'" namakota="'+ value.type +' ' +value.city_name+ '">' + value.type + ' ' + value.city_name + '</option>');
-                        $('#city').append(`<option value="${value.city_id}_${value.city_name}">${value.city_name}</option>`);
+                        $('#city').append(`<option value="${value.city_id}_${value.city_name}">${value.type} ${value.city_name}</option>`);
                     });
                 }
             });
