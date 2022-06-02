@@ -17,17 +17,15 @@ use App\Models\Operator;
 use App\Models\Product;
 use App\Models\Inputer;
 use App\Models\Budgeting;
+use App\Models\BudgetingRealization;
 use App\Events\MessageCreated;
-use App\Imports\UsersImport;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -109,8 +107,9 @@ class DashboardController extends Controller
         ])->get();
         $closing_max = max($closing_mo->count(), $closing_tu->count(), $closing_we->count(), $closing_th->count(), $closing_fr->count(), $closing_sa->count(), $closing_su->count());
 
+        $omset = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price');
         //omset this day
-        $omset_day_count = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('product_promotion');
+        $omset_day_count = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price');
         //count omset every month
         $omset_mo = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfWeek(),
@@ -142,33 +141,33 @@ class DashboardController extends Controller
         ])->get();
 
         //advertising cost this day
-        $advertising_day_count = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereDate('updated_at', $day)->sum('requirement');
+        $advertising_day_count = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereDate('updated_at', $day)->sum('requirement');
         //count advertising cost every month
-        $advertising_mo = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_mo = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek()->subDay(6),
         ])->sum('requirement');
-        $advertising_tu = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_tu = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(1),
             Carbon::now()->endOfWeek()->subDay(5),
         ])->sum('requirement');
-        $advertising_we = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_we = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(2),
             Carbon::now()->endOfWeek()->subDay(4),
         ])->sum('requirement');
-        $advertising_th = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_th = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(3),
             Carbon::now()->endOfWeek()->subDay(3),
         ])->sum('requirement');
-        $advertising_fr = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_fr = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(4),
             Carbon::now()->endOfWeek()->subDay(2),
         ])->sum('requirement');
-        $advertising_sa = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_sa = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(5),
             Carbon::now()->endOfWeek()->subDay(1),
         ])->sum('requirement');
-        $advertising_su = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_su = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(6),
             Carbon::now()->endOfWeek(),
         ])->sum('requirement');
@@ -240,7 +239,7 @@ class DashboardController extends Controller
             else if($x->role_id == 4){
                 return redirect(route('advDashboard'));
             }
-            else if($x->role_id == 5){
+            else if($x->role_id == 5 || $x->role_id == 13){
                 return redirect(route('csDashboard'));
             }
             else if($x->role_id == 9){
@@ -256,7 +255,15 @@ class DashboardController extends Controller
                 return redirect(route('JA-adv.index'));
             }
             else{
-                return view('dashboard', compact('users', 'lead_max', 'closing_max', 'users', 'announcements', 'products', 'all_leads', 'all_spam', 'leads', 'total_lead', 'campaigns', 'client', 'day', 'inputer', 'lead_count', 'closing_count', 'quantity', 'user_count', 'lead_su', 'lead_mo', 'lead_tu', 'lead_we', 'lead_th', 'lead_fr', 'lead_sa', 'closing_su', 'closing_mo', 'closing_tu', 'closing_we', 'closing_th', 'closing_fr', 'closing_sa', 'omset_su', 'omset_mo', 'omset_tu', 'omset_we', 'omset_th', 'omset_fr', 'omset_sa', 'advertising_su', 'advertising_mo', 'advertising_tu', 'advertising_we', 'advertising_th', 'advertising_fr', 'advertising_sa', 'lead_day_count', 'omset_day_count', 'advertising_day_count'),['role'=>$roles])->with('icon',$icons);
+                return view('dashboard', compact('users', 'lead_max', 'closing_max'),['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
+                ->with('products', $products)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('leads', $leads)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('client', $client)->with('day', $day)
+                ->with('inputer', $inputer)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
+                ->with('lead_su', $lead_su)->with('lead_mo', $lead_mo)->with('lead_tu', $lead_tu)->with('lead_we', $lead_we)->with('lead_th', $lead_th)->with('lead_fr', $lead_fr)->with('lead_sa', $lead_sa)
+                ->with('closing_su', $closing_su)->with('closing_mo', $closing_mo)->with('closing_tu', $closing_tu)->with('closing_we', $closing_we)->with('closing_th', $closing_th)->with('closing_fr', $closing_fr)->with('closing_sa', $closing_sa)
+                ->with('omset', $omset)->with('omset_su', $omset_su)->with('omset_mo', $omset_mo)->with('omset_tu', $omset_tu)->with('omset_we', $omset_we)->with('omset_th', $omset_th)->with('omset_fr', $omset_fr)->with('omset_sa', $omset_sa)
+                ->with('advertising_su', $advertising_su)->with('advertising_mo', $advertising_mo)->with('advertising_tu', $advertising_tu)->with('advertising_we', $advertising_we)->with('advertising_th', $advertising_th)->with('advertising_fr', $advertising_fr)->with('advertising_sa', $advertising_sa)
+                ->with('lead_day_count', $lead_day_count)->with('omset_day_count', $omset_day_count)->with('advertising_day_count', $advertising_day_count);
+                // ->with('countdown', $countdown);
             }
         }
     }
@@ -475,7 +482,7 @@ class DashboardController extends Controller
         $closing_max = max($closing_mo->count(), $closing_tu->count(), $closing_we->count(), $closing_th->count(), $closing_fr->count(), $closing_sa->count(), $closing_su->count());
 
         //omset this day
-        $omset_day_count = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereDate('created_at', $day)->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereDate('created_at', $day)->sum('product_promotion');
+        $omset_day_count = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereDate('created_at', $day)->sum('total_price');
         //count omset every month
         $omset_mo = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
             Carbon::now()->startOfWeek(),
@@ -507,33 +514,33 @@ class DashboardController extends Controller
         ])->get();
 
         //advertising cost this day
-        $advertising_day_count = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereDate('updated_at', $day)->sum('requirement');
+        $advertising_day_count = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereDate('updated_at', $day)->sum('requirement');
         //count advertising cost every month
-        $advertising_mo = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_mo = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek()->subDay(6),
         ])->sum('requirement');
-        $advertising_tu = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_tu = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(1),
             Carbon::now()->endOfWeek()->subDay(5),
         ])->sum('requirement');
-        $advertising_we = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_we = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(2),
             Carbon::now()->endOfWeek()->subDay(4),
         ])->sum('requirement');
-        $advertising_th = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_th = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(3),
             Carbon::now()->endOfWeek()->subDay(3),
         ])->sum('requirement');
-        $advertising_fr = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_fr = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(4),
             Carbon::now()->endOfWeek()->subDay(2),
         ])->sum('requirement');
-        $advertising_sa = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_sa = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(5),
             Carbon::now()->endOfWeek()->subDay(1),
         ])->sum('requirement');
-        $advertising_su = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_su = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek()->addDay(6),
             Carbon::now()->endOfWeek(),
         ])->sum('requirement');
@@ -550,21 +557,16 @@ class DashboardController extends Controller
             Carbon::now()->endOfMonth(),
         ])->get();
         $lead_all = Lead::where('admin_id', auth()->user()->admin_id)->get();
-        $omset_day = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('product_promotion');
+        $omset = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price');
+        $omset_day = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price');
         $omset_week = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         $omset_month = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         $omset_all = Inputer::where('admin_id', auth()->user()->admin_id)->get();
         $products = Product::all();
         $day = Carbon::now()->format('Y-m-d');
@@ -608,7 +610,7 @@ class DashboardController extends Controller
                 $all_spam  = Lead::where('admin_id', auth()->user()->admin_id)->where('advertiser', auth()->user()->name)->where('status_id', 6)->whereDate('created_at', $day)->get();
                 $campaigns = Campaign::where('admin_id', auth()->user()->admin_id)->get();
                 $total_lead = DB::table('products')->where('admin_id', auth()->user()->admin_id)->pluck('lead');
-                return view('adv',['role'=>$roles])->with('day', $day)->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
+                return view('adv',['role'=>$roles])->with('day', $day)->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)->with('omset', $omset)
                 ->with('products', $products)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('leads', $leads)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
                 ->with('lead_su', $lead_su)->with('lead_mo', $lead_mo)->with('lead_tu', $lead_tu)->with('lead_we', $lead_we)->with('lead_th', $lead_th)->with('lead_fr', $lead_fr)->with('lead_sa', $lead_sa)
                 ->with('closing_su', $closing_su)->with('closing_mo', $closing_mo)->with('closing_tu', $closing_tu)->with('closing_we', $closing_we)->with('closing_th', $closing_th)->with('closing_fr', $closing_fr)->with('closing_sa', $closing_sa)
@@ -677,14 +679,15 @@ class DashboardController extends Controller
         ])->get();
         $closing_week_max = max($closing_week1->count(), $closing_week2->count(), $closing_week3->count(), $closing_week4->count());
 
+        $omset = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek(),
+        ])->sum('total_price');
         //omset this week
         $omset_week_count = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         //count omset every month
         $omset_week1 = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
             Carbon::now()->startOfMonth(),
@@ -704,24 +707,24 @@ class DashboardController extends Controller
         ])->get();
 
         //advertising cost this week
-        $advertising_week_count = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week_count = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
         ])->sum('requirement');
         //count advertising cost every month
-        $advertising_week1 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week1 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth()->subWeek(3),
         ])->sum('requirement');
-        $advertising_week2 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week2 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth()->addWeek(1),
             Carbon::now()->endOfMonth()->subWeek(2),
         ])->sum('requirement');
-        $advertising_week3 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week3 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth()->addWeek(2),
             Carbon::now()->endOfMonth()->subWeek(1),
         ])->sum('requirement');
-        $advertising_week4 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week4 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth()->addWeek(3),
             Carbon::now()->endOfMonth(),
         ])->sum('requirement');
@@ -741,21 +744,15 @@ class DashboardController extends Controller
             Carbon::now()->endOfMonth(),
         ])->get();
         $lead_all = Lead::where('admin_id', auth()->user()->admin_id)->get();
-        $omset_day = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('product_promotion');
+        $omset_day = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price');
         $omset_week = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         $omset_month = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         $omset_all = Inputer::where('admin_id', auth()->user()->admin_id)->get();
         $products = Product::all();
         $user_expired = auth()->user()->expired_at;
@@ -802,10 +799,10 @@ class DashboardController extends Controller
                 ->with('products', $products)->with('all_spam', $all_spam)->with('all_leads', $all_leads)->with('leads', $leads)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
                 ->with('lead_week1', $lead_week1)->with('lead_week2', $lead_week2)->with('lead_week3', $lead_week3)->with('lead_week4', $lead_week4)
                 ->with('closing_week1', $closing_week1)->with('closing_week2', $closing_week2)->with('closing_week3', $closing_week3)->with('closing_week4', $closing_week4)
-                ->with('omset_week1', $omset_week1)->with('omset_week2', $omset_week2)->with('omset_week3', $omset_week3)->with('omset_week4', $omset_week4)
+                ->with('omset', $omset)->with('omset_week1', $omset_week1)->with('omset_week2', $omset_week2)->with('omset_week3', $omset_week3)->with('omset_week4', $omset_week4)
                 ->with('advertising_week1', $advertising_week1)->with('advertising_week2', $advertising_week2)->with('advertising_week3', $advertising_week3)->with('advertising_week4', $advertising_week4)
                 ->with('lead_week_count', $lead_week_count)->with('omset_week_count', $omset_week_count)->with('advertising_week_count', $advertising_week_count)
-                ->with('closing_week_max', $closing_week_max)->with('lead_week_max', $lead_week_max);
+                ->with('closing_week_max', $closing_week_max)->with('lead_week_max', $lead_week_max)->with('day', $day);
             }else{
                 return Redirect::back();
             }
@@ -931,14 +928,15 @@ class DashboardController extends Controller
         ])->get();
         $closing_month_max = max($closing_jan->count(), $closing_feb->count(), $closing_mar->count(), $closing_apr->count(), $closing_may->count(), $closing_jun->count(), $closing_jul->count(), $closing_aug->count(), $closing_sep->count(), $closing_okt->count(), $closing_nov->count(), $closing_des->count());
 
+        $omset = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
+            Carbon::now()->startOfMonth(),
+            Carbon::now()->endOfMonth(),
+        ])->sum('total_price');
         //omset this month
         $omset_month_count = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         //count omset every month
         $omset_jan = Inputer::where('admin_id', auth()->user()->admin_id)->where('adv_name', auth()->user()->name)->whereBetween('created_at', [
             Carbon::now()->startOfYear(),
@@ -990,56 +988,56 @@ class DashboardController extends Controller
         ])->get();
 
         //advertising this month
-        $advertising_month_count = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_month_count = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
         ])->sum('requirement');
         //count advertising every month
-        $advertising_jan = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_jan = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear(),
             Carbon::now()->endOfYear()->subMonth(11),
         ])->sum('requirement');
-        $advertising_feb = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_feb = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(1),
             Carbon::now()->endOfYear()->subMonth(10),
         ])->sum('requirement');
-        $advertising_mar = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_mar = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(2),
             Carbon::now()->endOfYear()->subMonth(9),
         ])->sum('requirement');
-        $advertising_apr = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_apr = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(3),
             Carbon::now()->endOfYear()->subMonth(8),
         ])->sum('requirement');
-        $advertising_may = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_may = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(4),
             Carbon::now()->endOfYear()->subMonth(7),
         ])->sum('requirement');
-        $advertising_jun = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_jun = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(5),
             Carbon::now()->endOfYear()->subMonth(6),
         ])->sum('requirement');
-        $advertising_jul = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_jul = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(6),
             Carbon::now()->endOfYear()->subMonth(5),
         ])->sum('requirement');
-        $advertising_aug = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_aug = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(7),
             Carbon::now()->endOfYear()->subMonth(4),
         ])->sum('requirement');
-        $advertising_sep = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_sep = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(8),
             Carbon::now()->endOfYear()->subMonth(3),
         ])->sum('requirement');
-        $advertising_okt = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_okt = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(9),
             Carbon::now()->endOfYear()->subMonth(2),
         ])->sum('requirement');
-        $advertising_nov = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_nov = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(10),
             Carbon::now()->endOfYear()->subMonth(1),
         ])->sum('requirement');
-        $advertising_des = Budgeting::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_des = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('user_name', auth()->user()->name)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(11),
             Carbon::now()->endOfYear(),
         ])->sum('requirement');
@@ -1059,21 +1057,15 @@ class DashboardController extends Controller
             Carbon::now()->endOfMonth(),
         ])->get();
         $lead_all = Lead::where('admin_id', auth()->user()->admin_id)->get();
-        $omset_day = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('product_promotion');
+        $omset_day = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->sum('total_price');
         $omset_week = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         $omset_month = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         $omset_all = Inputer::where('admin_id', auth()->user()->admin_id)->get();
         $products = Product::all();
         $day = Carbon::now()->format('Y-m-d');
@@ -1123,11 +1115,11 @@ class DashboardController extends Controller
                 ->with('lead_jul', $lead_jul)->with('lead_aug', $lead_aug)->with('lead_sep', $lead_sep)->with('lead_okt', $lead_okt)->with('lead_nov', $lead_nov)->with('lead_des', $lead_des)
                 ->with('closing_jan', $closing_jan)->with('closing_feb', $closing_feb)->with('closing_mar', $closing_mar)->with('closing_apr', $closing_apr)->with('closing_may', $closing_may)->with('closing_jun', $closing_jun)
                 ->with('closing_jul', $closing_jul)->with('closing_aug', $closing_aug)->with('closing_sep', $closing_sep)->with('closing_okt', $closing_okt)->with('closing_nov', $closing_nov)->with('closing_des', $closing_des)
-                ->with('omset_jan', $omset_jan)->with('omset_feb', $omset_feb)->with('omset_mar', $omset_mar)->with('omset_apr', $omset_apr)->with('omset_may', $omset_may)->with('omset_jun', $omset_jun)
+                ->with('omset', $omset)->with('omset_jan', $omset_jan)->with('omset_feb', $omset_feb)->with('omset_mar', $omset_mar)->with('omset_apr', $omset_apr)->with('omset_may', $omset_may)->with('omset_jun', $omset_jun)
                 ->with('omset_jul', $omset_jul)->with('omset_aug', $omset_aug)->with('omset_sep', $omset_sep)->with('omset_okt', $omset_okt)->with('omset_nov', $omset_nov)->with('omset_des', $omset_des)
                 ->with('advertising_jan', $advertising_jan)->with('advertising_feb', $advertising_feb)->with('advertising_mar', $advertising_mar)->with('advertising_apr', $advertising_apr)->with('advertising_may', $advertising_may)->with('advertising_jun', $advertising_jun)
                 ->with('advertising_jul', $advertising_jul)->with('advertising_aug', $advertising_aug)->with('advertising_sep', $advertising_sep)->with('advertising_okt', $advertising_okt)->with('advertising_nov', $advertising_nov)->with('advertising_des', $advertising_des)
-                ->with('lead_month_count', $lead_month_count)->with('omset_month_count', $omset_month_count)->with('advertising_month_count', $advertising_month_count)->with('lead_month_max', $lead_month_max)->with('closing_month_max', $closing_month_max);
+                ->with('lead_month_count', $lead_month_count)->with('omset_month_count', $omset_month_count)->with('advertising_month_count', $advertising_month_count)->with('lead_month_max', $lead_month_max)->with('closing_month_max', $closing_month_max)->with('day',$day);
             }else{
                 return Redirect::back();
             }
@@ -1150,9 +1142,9 @@ class DashboardController extends Controller
             }
             $x = auth()->user();
             $operator = Operator::where('user_id', $x->id)->value('user_id');
-            if($x->role_id == 5){
+            if($x->role_id == 5 || $x->role_id == 13){
                 $announcements = Announcement::where('admin_id', auth()->user()->admin_id)->get();
-                $role = Role::all();
+                $roles = Role::all();
                 $icons = Icon::all();
                 $products = Product::where('admin_id', auth()->user()->admin_id)->get();
                 if($request->date_filter){
@@ -1179,7 +1171,9 @@ class DashboardController extends Controller
                 $my_campaigns = DB::table('operators as o')->where('o.user_id', auth()->user()->id)->join('campaigns as c', 'o.campaign_id', 'c.id' )->whereNull(['c.deleted_at', 'o.deleted_at'])->get();
                 // dd($my_campaigns);
                 $total_lead = DB::table('products')->where('admin_id', auth()->user()->admin_id)->pluck('lead');
-                return view('cs', compact('role', 'users', 'announcements', 'products', 'leads', 'all_leads', 'all_spam', 'total_lead', 'campaigns', 'day', 'my_campaigns'))->with('icon',$icons);
+                return view('cs',['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
+                ->with('products', $products)->with('leads', $leads)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('day', $day)
+                ->with('my_campaigns', $my_campaigns);
             }else{
                 return Redirect::back();
             }
@@ -1209,13 +1203,13 @@ class DashboardController extends Controller
             $day = Carbon::now()->format('Y-m-d');
         }
         $lead = Lead::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $day)->orderByDesc('id')->get();
-        $leads = Lead::where('admin_id', auth()->user()->admin_id)->get();
+        // $leads = Lead::where('admin_id', auth()->user()->admin_id)->get();
         $announcements = Announcement::where('admin_id', auth()->user()->admin_id)->get();
         $x = auth()->user();
         if($x->role_id == 1){
             return view('DetailLead')->with('campaign', $campaigns)->with('client', $client)->with('operator', $operator)->with('lead', $lead)->with('leads', $leads)->with('announcements', $announcements);
         }elseif($x->role_id == 4){
-            return view('DetailLeadADV')->with('campaign', $campaigns)->with('client', $client)->with('operator', $operator)->with('lead', $lead)->with('leads', $leads)->with('announcements', $announcements);
+            return view('DetailLeadADV')->with('campaign', $campaigns)->with('client', $client)->with('operator', $operator)->with('lead', $lead)->with('announcements', $announcements)->with('day', $day);
         }elseif($x->role_id == 12){
             return view('DetailLeadJA-ADV')->with('campaign', $campaigns)->with('client', $client)->with('operator', $operator)->with('lead', $lead)->with('leads', $leads)->with('announcements', $announcements);
         }
@@ -1279,14 +1273,15 @@ class DashboardController extends Controller
         ])->get();
         $closing_week_max = max($closing_week1->count(), $closing_week2->count(), $closing_week3->count(), $closing_week4->count());
 
+        $omset = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek(),
+        ])->sum('total_price');
         //omset this week
         $omset_week_count = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         //count omset every week
         $omset_week1 = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfMonth(),
@@ -1306,24 +1301,24 @@ class DashboardController extends Controller
         ])->get();
 
         //advertising cost this week
-        $advertising_week_count = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week_count = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfWeek(),
             Carbon::now()->endOfWeek(),
         ])->sum('requirement');
         //count advertising cost every week
-        $advertising_week1 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week1 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth()->subWeek(3),
         ])->sum('requirement');
-        $advertising_week2 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week2 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth()->addWeek(1),
             Carbon::now()->endOfMonth()->subWeek(2),
         ])->sum('requirement');
-        $advertising_week3 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week3 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth()->addWeek(2),
             Carbon::now()->endOfMonth()->subWeek(1),
         ])->sum('requirement');
-        $advertising_week4 = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_week4 = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth()->addWeek(3),
             Carbon::now()->endOfMonth(),
         ])->sum('requirement');
@@ -1397,7 +1392,7 @@ class DashboardController extends Controller
             else if($x->role_id == 4){
                 return redirect(route('advDashboard'));
             }
-            else if($x->role_id == 5){
+            else if($x->role_id == 5 || $x->role_id == 13){
                 return redirect(route('csDashboard'));
             }
             else if($x->role_id == 9){
@@ -1409,7 +1404,15 @@ class DashboardController extends Controller
                 return redirect(route('HumanResource.index'));
             }
             else{
-                return view('WeeklyDashboard', compact('users', 'announcements', 'products', 'all_leads', 'all_spam', 'leads', 'total_lead', 'campaigns', 'client', 'day', 'inputer', 'lead_count', 'closing_count', 'quantity', 'user_count', 'lead_week1', 'lead_week2', 'lead_week3', 'lead_week4', 'closing_week1', 'closing_week2', 'closing_week3', 'closing_week4', 'omset_week1', 'omset_week2', 'omset_week3', 'omset_week4', 'advertising_week1', 'advertising_week2', 'advertising_week3', 'advertising_week4', 'lead_week_count', 'omset_week_count', 'advertising_week_count', 'closing_week_max', 'lead_week_max'),['role'=>$roles])->with('icon',$icons);
+                return view('WeeklyDashboard', compact('users'),['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
+                ->with('products', $products)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('leads', $leads)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('client', $client)->with('day', $day)
+                ->with('inputer', $inputer)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
+                ->with('lead_week1', $lead_week1)->with('lead_week2', $lead_week2)->with('lead_week3', $lead_week3)->with('lead_week4', $lead_week4)
+                ->with('closing_week1', $closing_week1)->with('closing_week2', $closing_week2)->with('closing_week3', $closing_week3)->with('closing_week4', $closing_week4)
+                ->with('omset', $omset)->with('omset_week1', $omset_week1)->with('omset_week2', $omset_week2)->with('omset_week3', $omset_week3)->with('omset_week4', $omset_week4)
+                ->with('advertising_week1', $advertising_week1)->with('advertising_week2', $advertising_week2)->with('advertising_week3', $advertising_week3)->with('advertising_week4', $advertising_week4)
+                ->with('lead_week_count', $lead_week_count)->with('omset_week_count', $omset_week_count)->with('advertising_week_count', $advertising_week_count)
+                ->with('closing_week_max', $closing_week_max)->with('lead_week_max', $lead_week_max);
                 // ->with('countdown', $countdown);
             }
         }
@@ -1535,14 +1538,15 @@ class DashboardController extends Controller
         ])->get();
         $closing_month_max = max($closing_jan->count(), $closing_feb->count(), $closing_mar->count(), $closing_apr->count(), $closing_may->count(), $closing_jun->count(), $closing_jul->count(), $closing_aug->count(), $closing_sep->count(), $closing_okt->count(), $closing_nov->count(), $closing_des->count());
 
+        $omset = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
+            Carbon::now()->startOfMonth(),
+            Carbon::now()->endOfMonth(),
+        ])->sum('total_price');
         //omset this month
         $omset_month_count = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
-        ])->sum('total_price') - Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->sum('product_promotion');
+        ])->sum('total_price');
         //count omset every month
         $omset_jan = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
             Carbon::now()->startOfYear(),
@@ -1594,56 +1598,56 @@ class DashboardController extends Controller
         ])->get();
 
         //advertising this month
-        $advertising_month_count = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_month_count = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth(),
         ])->sum('requirement');
         //count advertising every month
-        $advertising_jan = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_jan = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear(),
             Carbon::now()->endOfYear()->subMonth(11),
         ])->sum('requirement');
-        $advertising_feb = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_feb = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(1),
             Carbon::now()->endOfYear()->subMonth(10),
         ])->sum('requirement');
-        $advertising_mar = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_mar = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(2),
             Carbon::now()->endOfYear()->subMonth(9),
         ])->sum('requirement');
-        $advertising_apr = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_apr = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(3),
             Carbon::now()->endOfYear()->subMonth(8),
         ])->sum('requirement');
-        $advertising_may = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_may = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(4),
             Carbon::now()->endOfYear()->subMonth(7),
         ])->sum('requirement');
-        $advertising_jun = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_jun = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(5),
             Carbon::now()->endOfYear()->subMonth(6),
         ])->sum('requirement');
-        $advertising_jul = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_jul = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(6),
             Carbon::now()->endOfYear()->subMonth(5),
         ])->sum('requirement');
-        $advertising_aug = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_aug = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(7),
             Carbon::now()->endOfYear()->subMonth(4),
         ])->sum('requirement');
-        $advertising_sep = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_sep = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(8),
             Carbon::now()->endOfYear()->subMonth(3),
         ])->sum('requirement');
-        $advertising_okt = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_okt = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(9),
             Carbon::now()->endOfYear()->subMonth(2),
         ])->sum('requirement');
-        $advertising_nov = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_nov = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(10),
             Carbon::now()->endOfYear()->subMonth(1),
         ])->sum('requirement');
-        $advertising_des = Budgeting::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->where('status', 1)->whereBetween('updated_at', [
+        $advertising_des = BudgetingRealization::where('admin_id', auth()->user()->admin_id)->where('role_id', 4)->whereBetween('updated_at', [
             Carbon::now()->startOfYear()->addMonth(11),
             Carbon::now()->endOfYear(),
         ])->sum('requirement');
@@ -1717,7 +1721,7 @@ class DashboardController extends Controller
             else if($x->role_id == 4){
                 return redirect(route('advDashboard'));
             }
-            else if($x->role_id == 5){
+            else if($x->role_id == 5 || $x->role_id == 13){
                 return redirect(route('csDashboard'));
             }
             else if($x->role_id == 9){
@@ -1729,7 +1733,19 @@ class DashboardController extends Controller
                 return redirect(route('HumanResource.index'));
             }
             else{
-                return view('MonthlyDashboard', compact('users', 'announcements', 'products', 'leads', 'all_leads', 'all_spam', 'total_lead', 'campaigns', 'client', 'day', 'inputer', 'lead_count', 'closing_count', 'quantity', 'user_count', 'lead_jan', 'lead_feb', 'lead_mar', 'lead_apr', 'lead_may', 'lead_jun', 'lead_jul', 'lead_aug', 'lead_sep', 'lead_okt', 'lead_nov', 'lead_des', 'closing_jan', 'closing_feb', 'closing_mar', 'closing_apr', 'closing_may', 'closing_jun', 'closing_jul', 'closing_aug', 'closing_sep', 'closing_okt', 'closing_nov', 'closing_des', 'omset_jan', 'omset_feb', 'omset_mar', 'omset_apr', 'omset_may', 'omset_jun', 'omset_jul', 'omset_aug', 'omset_sep', 'omset_okt', 'omset_nov', 'omset_des', 'advertising_jan', 'advertising_feb', 'advertising_mar', 'advertising_apr', 'advertising_may', 'advertising_jun', 'advertising_jul', 'advertising_aug', 'advertising_sep', 'advertising_okt', 'advertising_nov', 'advertising_des', 'lead_month_count', 'omset_month_count', 'advertising_month_count', 'lead_month_max', 'closing_month_max'),['role'=>$roles])->with('icon',$icons);
+                return view('MonthlyDashboard', compact('users'),['role'=>$roles])->with('users',$users)->with('announcements',$announcements)->with('icon',$icons)
+                ->with('products', $products)->with('leads', $leads)->with('all_leads', $all_leads)->with('all_spam', $all_spam)->with('total_lead', $total_lead)->with('campaigns', $campaigns)->with('client', $client)->with('day', $day)
+                ->with('inputer', $inputer)->with('lead_count', $lead_count)->with('closing_count', $closing_count)->with('quantity', $quantity)->with('user_count', $user_count)
+                ->with('lead_jan', $lead_jan)->with('lead_feb', $lead_feb)->with('lead_mar', $lead_mar)->with('lead_apr', $lead_apr)->with('lead_may', $lead_may)->with('lead_jun', $lead_jun)
+                ->with('lead_jul', $lead_jul)->with('lead_aug', $lead_aug)->with('lead_sep', $lead_sep)->with('lead_okt', $lead_okt)->with('lead_nov', $lead_nov)->with('lead_des', $lead_des)
+                ->with('closing_jan', $closing_jan)->with('closing_feb', $closing_feb)->with('closing_mar', $closing_mar)->with('closing_apr', $closing_apr)->with('closing_may', $closing_may)->with('closing_jun', $closing_jun)
+                ->with('closing_jul', $closing_jul)->with('closing_aug', $closing_aug)->with('closing_sep', $closing_sep)->with('closing_okt', $closing_okt)->with('closing_nov', $closing_nov)->with('closing_des', $closing_des)
+                ->with('omset', $omset)->with('omset_jan', $omset_jan)->with('omset_feb', $omset_feb)->with('omset_mar', $omset_mar)->with('omset_apr', $omset_apr)->with('omset_may', $omset_may)->with('omset_jun', $omset_jun)
+                ->with('omset_jul', $omset_jul)->with('omset_aug', $omset_aug)->with('omset_sep', $omset_sep)->with('omset_okt', $omset_okt)->with('omset_nov', $omset_nov)->with('omset_des', $omset_des)
+                ->with('advertising_jan', $advertising_jan)->with('advertising_feb', $advertising_feb)->with('advertising_mar', $advertising_mar)->with('advertising_apr', $advertising_apr)->with('advertising_may', $advertising_may)->with('advertising_jun', $advertising_jun)
+                ->with('advertising_jul', $advertising_jul)->with('advertising_aug', $advertising_aug)->with('advertising_sep', $advertising_sep)->with('advertising_okt', $advertising_okt)->with('advertising_nov', $advertising_nov)->with('advertising_des', $advertising_des)
+                ->with('lead_month_count', $lead_month_count)->with('omset_month_count', $omset_month_count)->with('advertising_month_count', $advertising_month_count)
+                ->with('lead_month_max', $lead_month_max)->with('closing_month_max', $closing_month_max);
                 // ->with('countdown', $countdown);
             }
         }
@@ -1739,7 +1755,7 @@ class DashboardController extends Controller
         $products = Product::where('admin_id', auth()->user()->admin_id)->get();
         if(auth()->user()->role_id==4){
             return view('evaluationADV')->with('product', $products);
-        }elseif (auth()->user()->role_id==5){
+        }elseif (auth()->user()->role_id==5 || auth()->user()->role_id==13){
             return view('evaluationCS')->with('product', $products);
         }elseif (auth()->user()->role_id==1){
             return view('evaluation')->with('product', $products);
@@ -1747,82 +1763,11 @@ class DashboardController extends Controller
             return redirect()->back();
         }
     }
-    public function importUser(Request $request){
-        // return $request->all();
-        $this->validate($request, [
-			'import_user' => 'required|mimes:csv,xls,xlsx'
-		]);
-        $file = $request->file('import_user');
-		// membuat nama file unik
-		$nama_file = rand().$file->getClientOriginalName();
-
-		// upload ke folder file_siswa di dalam folder public
-		$path = $file->move('public/file_import',$nama_file);
-
-		// import data
-		// Excel::import(new SiswaImport, public_path('/file_siswa/'.$nama_file));
-        Excel::import(new UsersImport,$path);
-        return back()->with('success', 'User Imported Successfully.');
-    }
 
     public function getProduct($campaign_id){
         $product_id = Campaign::where('id', $campaign_id)->value('product_id');
         $product = Product::where('id', $product_id)->get();
 
         return response()->json($product, 200);
-    }
-    public function dailyWidget(){
-        $today = Carbon::now()->format('Y-m-d');
-        $lead_count = Lead::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $today)->count();
-        $closing_count = Lead::where('admin_id', auth()->user()->admin_id)->where('status_id', 5)->whereDate('created_at', $today)->count();
-        $quantity = Inputer::where('admin_id', auth()->user()->admin_id)->whereDate('created_at', $today)->sum('quantity');
-        return response()->json([
-            'lead_count'=> $lead_count,
-            'closing_count' => $closing_count,
-            'quantity' => $quantity
-        ], 200);
-    }
-    public function weeklyWidget(){
-        $lead_count = Lead::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->count();
-        $closing_count = Lead::where('admin_id', auth()->user()->admin_id)->where('status_id', 5)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->count();
-        $quantity = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])->sum('quantity');
-        return response()->json([
-            'lead_count'=> $lead_count,
-            'closing_count' => $closing_count,
-            'quantity' => $quantity
-        ], 200);
-    }
-    public function monthlyWidget(){
-        $lead_count = Lead::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->count();
-        $closing_count = Lead::where('admin_id', auth()->user()->admin_id)->where('status_id', 5)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->count();
-        $quantity = Inputer::where('admin_id', auth()->user()->admin_id)->whereBetween('created_at', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->sum('quantity');
-        return response()->json([
-            'lead_count'=> $lead_count,
-            'closing_count' => $closing_count,
-            'quantity' => $quantity
-        ], 200);
-    }
-    public function template_user()
-    {
-        return Response::download('public/assets/file/add_user_template.xlsx');
-
     }
 }

@@ -2,6 +2,8 @@ $(function(){
     $('#weight, #warehouse, #province_id, #city_id, #subdistrict_id, #courier, #shipping_promotion').on('change', function(){
         var weight = $("#weight").val();
         var warehouse = $("#warehouse").val();
+        warehouse = warehouse.split('_');
+        warehouse = warehouse[1];
         var province = $("#province_id").val();
         var city = $("#city_id").val();
         var subdistrict = $("#subdistrict_id").val();

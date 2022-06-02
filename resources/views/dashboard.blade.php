@@ -55,70 +55,6 @@
 	<script src="assets/js/custom/modals/upgrade-plan.js"></script>
 	<script src="assets/js/custom/intro.js"></script>
     <script>
-        $(function(){
-            function daily() {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('dailyWidget') }}",
-                    dataType: "JSON",
-                    success: function (res) {
-                        $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
-                        $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
-                        res.lead_count == 0 ? $('[closing_rate]').text('0 %') : $('[closing_rate]').text(Math.round((res.closing_count/res.lead_count)*100) +' %');
-
-                        console.log(typeof(res.closing_count))
-                    }
-                });
-            }
-            function weekly(){
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('dailyWidget') }}",
-                    dataType: "JSON",
-                    success: function (res) {
-                        $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
-                        $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
-                        res.lead_count == 0 ? $('[closing_rate]').text('0 %') : $('[closing_rate]').text(Math.round((res.closing_count/res.lead_count)*100) +' %');
-                    }
-                });
-            }
-            function monthly(){
-                $.ajax({
-                    type: "GET",
-                    url: "{{ route('monthlyWidget') }}",
-                    dataType: "JSON",
-                    success: function (res) {
-                        $('[lead_count]').text(new Intl.NumberFormat().format(res.lead_count));
-                        $('[closing_count]').text(new Intl.NumberFormat().format(res.closing_count));
-                        res.lead_count == 0 ? $('[closing_rate]').text('0 %') : $('[closing_rate]').text(Math.round((res.closing_count/res.lead_count)*100) +' %');
-                    }
-                });
-            }
-            daily();
-            $('#daily').click(function (e) {
-                e.preventDefault();
-                daily();
-                $(this).addClass('active');
-                $('#weekly').removeClass('active');
-                $('#monthly').removeClass('active');
-            });
-            $('#weekly').click(function (e) {
-                e.preventDefault();
-                weekly();
-                $(this).addClass('active');
-                $('#daily').removeClass('active');
-                $('#monthly').removeClass('active');
-            });
-            $('#monthly').click(function (e) {
-                e.preventDefault();
-                monthly();
-                $(this).addClass('active');
-                $('#daily').removeClass('active');
-                $('#weekly').removeClass('active');
-            });
-        });
-    </script>
-    <script>
         $(document).ready(function() {
             $('#role_id').on('change', function() {
                 var roleId = $(this).val();
@@ -223,10 +159,10 @@
     });
     </script>
     @endif
-    @if(!empty(Session::get('error_code')) && Session::get('error_code') == 'add-user-excel')
+    @if(!empty(Session::get('error_code')) && Session::get('error_code') == 'add_product')
     <script>
     $(function() {
-        $('#add-user-excel').modal('show');
+        $('#add-product').modal('show');
     });
     </script>
     @endif

@@ -25,12 +25,12 @@
 				<span class="menu-arrow d-lg-none"></span>
 			</a>
 		</div>
-		<div class="menu-item menu-lg-down-accordion me-lg-1">
+		{{-- <div class="menu-item menu-lg-down-accordion me-lg-1">
 			<a class="menu-link py-3" href="{{ route('budgeting.index') }}">
 				<span class="menu-title text-white">Budgeting Advertising</span>
 				<span class="menu-arrow d-lg-none"></span>
 			</a>
-		</div>
+		</div> --}}
 		<div class="menu-item menu-lg-down-accordion me-lg-1">
 			<a class="menu-link py-3" href="{{ route ('budgeting_realization.index') }}">
 				<span class="menu-title text-white">Budgeting Realization</span>
@@ -43,7 +43,7 @@
 				<span class="menu-arrow d-lg-none"></span>
 			</a>
 		</div>
-		<div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start"
+		{{-- <div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start"
 			class="menu-item menu-lg-down-accordion me-lg-1">
 			<span class="menu-link py-3">
 				<span class="menu-title text-white">Logistics</span>
@@ -67,7 +67,7 @@
 					</span>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 	</div>
 
 
@@ -121,9 +121,9 @@
 					</span>
 				</div>
 			</div>
-		</div> 
+		</div>
 	</div>--}}
-	
+
 	<!--end::Menu-->
 </div>
 <!--end::Menu wrapper-->

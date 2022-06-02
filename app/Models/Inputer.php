@@ -41,4 +41,7 @@ class Inputer extends Model
     public function cs(){
         return $this->belongsTo(User::class);
     }
+    public function warehouse(){
+        return $this->belongsTo(Warehouse::class);
+    }
 }

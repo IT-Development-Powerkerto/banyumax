@@ -9,14 +9,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = [
-        'name',
-        'price',
-        'lead',
-        'discount',
-        'image',
-        'product_link',
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'price',
+    //     'lead',
+    //     'discount',
+    //     'image',
+    //     'product_link',
+    // ];
+    protected $guarded = ['id'];
 
     public function campaign(){
         return $this->hasMany(Campaign::class);

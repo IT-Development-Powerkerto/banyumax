@@ -37,7 +37,7 @@
 				<span class="menu-arrow d-lg-none"></span>
 			</a>
 		</div>
-		<div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start"
+		{{-- <div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start"
 			class="menu-item menu-lg-down-accordion me-lg-1">
 			<span class="menu-link py-3">
 				<span class="menu-title text-white">Logistics</span>
@@ -61,7 +61,7 @@
 					</span>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 	</div>
 	<!--end::Menu-->
 </div>

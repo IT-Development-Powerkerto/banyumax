@@ -207,7 +207,7 @@ Route::resource('/courier', CourierController::class);
 
 Route::get('/sync', [SyncController::class, 'tableClient']);
 Route::get('/sync-inputer', [SyncController::class, 'tableInputer']);
-
+Route::get('/sync-warehouse', [SyncController::class, 'warehouse']);
 Route::get('/sites/pwkmaintenance', function (){
     return Artisan::call('down');
 });

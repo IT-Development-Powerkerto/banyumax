@@ -5,7 +5,7 @@
 		<!--begin::Col-->
 		<div class="col-xl-4">
 
-			@include('partials/widgets/inputer/_widget-5')
+			@include('partials/widgets/inputer/_widget-warehouse')
 
 
 		</div>
@@ -13,14 +13,14 @@
 		<!--begin::Col-->
 		<div class="col-xl-4">
 
-			@include('partials/widgets/inputer/_widget-3')
+			@include('partials/widgets/inputer/_widget-payment')
 
 		</div>
 		<!--end::Col-->
 		<!--begin::Col-->
 		<div class="col-xl-4">
 
-			@include('partials/widgets/inputer/_widget-4')
+			@include('partials/widgets/inputer/_widget-courier')
 
 		</div>
 		<!--end::Col-->

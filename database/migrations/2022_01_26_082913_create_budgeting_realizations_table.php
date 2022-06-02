@@ -21,7 +21,7 @@ class CreateBudgetingRealizationsTable extends Migration
             $table->foreignId('role_id');
             $table->string('item_name');
             $table->integer('requirement');
-            $table->string('attachment');
+            $table->string('attachment')->nullable();
             $table->string('description');
             $table->date('created_at');
             $table->date('updated_at');

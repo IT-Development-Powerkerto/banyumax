@@ -91,7 +91,7 @@
 																				</div>
 																				<!--end::Col-->
 																			</div>
-                                                                        </div>
+																		</div>
 																		<!--end::Input group-->
 																		<div class="mb-3">
 																			<label for="percentage_admin" class="form-label">Percentage Admin</label>
@@ -124,6 +124,7 @@
 															<tr class="fw-bolder text-muted">
 																<th class="min-w-25px">No</th>
 																<th class="min-w-125px">Courier</th>
+																<th class="min-w-100px">Percentage Admin</th>
 																<th class="min-w-100px text-end">Actions</th>
 															</tr>
 														</thead>
@@ -143,6 +144,16 @@
 																			</div>
 																			<div class="d-flex justify-content-start flex-column">
 																				<label class="text-dark fw-medium text-hover-primary fs-6">{{ $courier->name }}</label>
+																			</div>
+																		</div>
+																	</td>
+																	<td>
+																		<div class="d-flex align-items-center">
+																			<div class="symbol symbol-45px me-5 image-size">
+																				<img src="assets/img/default.jpg" width="100px" alt="" />
+																			</div>
+																			<div class="d-flex justify-content-start flex-column">
+																				<label class="text-dark fw-medium text-hover-primary fs-6">15%</label>
 																			</div>
 																		</div>
 																	</td>

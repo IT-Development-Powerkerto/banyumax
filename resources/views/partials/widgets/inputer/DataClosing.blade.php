@@ -5,7 +5,8 @@
 										<div class="card-header border-0 pt-5">
 											<h3 class="card-title align-items-start flex-column mt-n3">
 												<span class="card-label fw-bolder fs-3 mb-1">Data Closing</span>
-												<span class="text-muted mt-1 fw-bold fs-7">{{$inputers->where('admin_id', auth()->user()->admin_id)->where('operator_name', $name_cs_inputers)->count()}} Data</span>
+                                                {{-- {{ $cs_inputers }} --}}
+												<span class="text-muted mt-1 fw-bold fs-7">{{$inputers->whereIn('operator_name', $name_cs_inputers)->count()}} Data</span>
 											</h3>
 											<div class="card-toolbar mt-n3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover">
 												<!-- Button trigger modal -->
@@ -64,7 +65,7 @@
 												</div>
 												<form action="/inputer" method="GET" class="d-flex">
 													<div class="me-2 d-flex flex-row">
-														<input class="form-control text-muted mt-0" name="date_filter" id="date_filter" type="date" style="height: 33px;" value="{{ $day }}" onchange="submit()">
+														<input class="form-control text-muted mt-0" name="date_filter" value="{{ $day }}" id="date_filter" type="date" style="height: 33px;" onchange="submit()">
 													</div>
 												</form>
 											</div>
@@ -101,12 +102,12 @@
 																	<div class="d-flex align-items-center">
 																		<div class="d-flex justify-content-start flex-column">
 																			<a href="{{ route('viewdata',['id' => $inputer->id]) }}" class="text-dark fw-normal fs-6 text-hover-primary mb-2">
-																				{{$inputer['customer_address']}} / CS {{$inputer->lead->user['name']}} / ADV {{$inputer->lead['advertiser']}} / JA Hanif / {{$inputer['product_name']}} {{$inputer['quantity']}} box / {{$inputer['total_price']+$inputer['shipping_price']}} / {{$inputer['product_promotion'] + $inputer['shipping_promotion']}} / {{ $inputer->promotion['promotion_name'] ?? 'Without Promotion'}}
+																				{{$inputer['customer_address']}} / CS {{$inputer['operator_name'] ?? ''}} / ADV {{$inputer->lead['advertiser']}} / JA Hanif / {{$inputer['product_name']}} {{$inputer['quantity']}} box / {{$inputer['total_price']+$inputer['shipping_price']}} / {{$inputer['product_promotion'] + $inputer['shipping_promotion']}} / {{ $inputer->promotion['promotion_name'] ?? 'Without Promotion'}}
 																			</a>
 																		</div>
 																	</div>
 																</td>
-																<td>
+																{{-- <td>
 																	<div class="d-flex align-items-center">
 																		<div class="d-flex justify-content-start flex-column">
 																			<a href="{{ route('export-one-inputer', ['id' => $inputer->id])}}" class="text-dark fw-normal fs-6 text-hover-primary mb-2">
@@ -119,7 +120,7 @@
 																			</a>
 																		</div>
 																	</div>
-																</td>
+																</td> --}}
 															</tr>
 														</tbody>
 														@endforeach

@@ -25,7 +25,7 @@
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Header-->
 					<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
-						
+
 						@include('layout/header/_baseADV')
 
 					</div>
@@ -83,7 +83,7 @@
 
 														<div class="row align-items-center col-12 pb-5">
 															<div class="col-2">
-																<label for="inputtitle" class="col-form-label">Tittle</label>
+																<label for="inputtitle" class="col-form-label">Title</label>
 															</div>
 															<div class="col-10">
 																<input type="text" name="title" value="" required id="inputtitle" class="form-control" aria-describedby="titleHelpInline">
@@ -101,6 +101,14 @@
 																</select>
 															</div>
 														</div>
+                                                        {{-- <div class="row align-items-center col-12 pb-5">
+															<div class="col-4">
+																<label for="inputtkp" class="col-form-label">Tiktok Pixel</label>
+															</div>
+															<div class="col-8">
+																<textarea type="text" name="tkp" required id="inputtkp" class="form-control" aria-describedby="tkpHelpInline"></textarea>
+															</div>
+														</div> --}}
 														<div class="row align-items-center col-12 pb-5">
 															<div class="col-2">
 																<label for="inputfbp" class="col-form-label">Facebook Pixel</label>
@@ -123,14 +131,6 @@
 														</div>
 														<div class="row align-items-center col-12 pb-5">
 															<div class="col-2">
-																<label for="inputtp"  class="col-form-label">Thanks Page</label>
-															</div>
-															<div class="col-10">
-																<textarea type="text" name="tp" required id="inputtp" class="form-control" aria-describedby="tpHelpInline"></textarea>
-															</div>
-														</div>
-														<div class="row align-items-center col-12 pb-5">
-															<div class="col-2">
 																<label for="wa_event_id" class="col-form-label">Facebook Event WA</label>
 															</div>
 															<div class="dropdown col-10">
@@ -139,6 +139,14 @@
 																	<option value="{{$event->id}}" required>{{$event->name}}</option>
 																	@endforeach
 																</select>
+															</div>
+														</div>
+														<div class="row align-items-center col-12 pb-5">
+															<div class="col-2">
+																<label for="inputtp"  class="col-form-label">Thanks Page</label>
+															</div>
+															<div class="col-10">
+																<textarea type="text" name="tp" required id="inputtp" class="form-control" aria-describedby="tpHelpInline"></textarea>
 															</div>
 														</div>
 														<div class="row align-items-center col-12 pb-5">
@@ -176,316 +184,220 @@
 											<!--begin::Table head-->
 											<thead>
 												<tr class="fw-bolder text-muted">
-													<th class="min-w-50px">No</th>
+                                                <th class="min-w-50px">No</th>
 													<th class="min-w-150px">Title</th>
-													<th class="min-w-150px">Operators</th>
-													<th class="min-w-150px">Leads</th>
+													<th class="min-w-100px text-center">Operators</th>
+													<th class="min-w-100px text-center">Leads</th>
 													<th class="min-w-200px">Fp code</th>
 													<th class="min-w-200px">WA code</th>
+													<th class="min-w-200px">Tp code</th>
 													<th class="min-w-200px text-end">Actions</th>
 												</tr>
 											</thead>
 											<!--end::Table head-->
 											<!--begin::Table body-->
 											<tbody>
-                                                <?php $n=0; ?>
-                                                @if (auth()->user()->role_id == 1)
-                                                    @foreach ($campaigns as $campaign)
-                                                    <tr>
-                                                        <td>
-                                                            <label class="text-dark fw-bolder text-hover-primary d-block fs-6" >{{$n+=1}}</label>
-                                                        </td>
-                                                        <td>
-                                                            <!-- <div class="d-flex align-items-center">
-                                                                <label for="">WA Generosku</label>
-                                                                <h1 class="text-dark fw-bolder text-hover-primary fs-6">https://mauorder.online/wa-generosku-2 </h1>
-                                                            </div> -->
-                                                            <div class="timeline-desc timeline-desc-light-primary mx-3">
-                                                                <span class="text-dark fw-bolder text-hover-primary d-block fs-6">{{$campaign->title}}</span>
-                                                                <!-- <p class="fw-bolder pb-2">
-                                                                    https://mauorder.online/wa-generosku-2
-                                                                </p> -->
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <label class="text-dark fw-bolder text-hover-primary d-block fs-6">{{ $campaign->operator->count() }} Operators</label>
-                                                        </td>
-                                                        <td>
-                                                            <label class="text-dark fw-bolder text-hover-primary d-block fs-6">{{$campaign->lead->count()}} Leads</label>
-                                                        </td>
-                                                        <td>
-                                                            <textarea type="text" name="tp" id="inputtp" class="form-control" aria-describedby="tpHelpInline" >
-    <!doctype html>
-    <html lang="en">
-    <head>
+                                                @foreach ($campaigns->where('user_id', auth()->user()->id) as $campaign)
+                                                <tr>
+                                                    <td>
+                                                        <label class="text-dark fw-bolder text-hover-primary d-block fs-6" >{{$loop->iteration}}</label>
+                                                    </td>
+                                                    <td>
+                                                        <!-- <div class="d-flex align-items-center">
+                                                            <label for="">WA Generosku</label>
+                                                            <h1 class="text-dark fw-bolder text-hover-primary fs-6">https://mauorder.online/wa-generosku-2 </h1>
+                                                        </div> -->
+                                                        <div class="timeline-desc timeline-desc-light-primary mx-3">
+                                                            <span class="text-dark fw-bolder text-hover-primary d-block fs-6">{{$campaign->title}}</span>
+                                                            <!-- <p class="fw-bolder pb-2">
+                                                                https://mauorder.online/wa-generosku-2
+                                                            </p> -->
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <label class="text-dark fw-bolder text-hover-primary d-block fs-6">{{ $campaign->operator->count() }}</label>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <label class="text-dark fw-bolder text-hover-primary d-block fs-6">{{ $campaign->lead->count() }}</label>
+                                                        {{-- <label class="text-primary fw-bolder d-block fs-6" alt="Facebook">{{$campaign->lead->count()}}</label>
+                                                        <label class="text-success fw-bolder d-block fs-6" alt="Whatsapp">{{$campaign->lead->count()}}</label>
+                                                        <label class="text-dark fw-bolder d-block fs-6" alt="Tiktok">{{$campaign->lead->count()}}</label> --}}
+                                                    </td>
+                                                    <td>
+                                                        <textarea type="text" name="tp" id="inputtp" class="form-control" aria-describedby="tpHelpInline" >
+<!doctype html>
+<html lang="en">
+<head>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-        <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        @foreach (explode(',',$campaign->facebook_pixel) as $fp)
-        fbq('init', '{{$fp}}');
-        @endforeach
-        fbq('track', 'PageView');
-        </script>
-        <noscript>
-        <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?-ev=PageView&noscript=1"/>
-        </noscript>
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    @foreach (explode(',',$campaign->facebook_pixel) as $fp)
+    fbq('init', '{{$fp}}');
+    @endforeach
+    fbq('track', 'PageView');
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?-ev=PageView&noscript=1"/>
+    </noscript>
 
-        <title></title>
-    </head>
-    <body>
+    <title></title>
+</head>
+<body>
 
-        <div class="container">
-            <form action="https://api.app.banyumax.id/public/api/lead/{{$campaign->id}}/{{$campaign->product_id}}" method="POST">
-            <div class="mb-3" hidden>
-                    <label for="exampleInputNama" class="form-label">Campaign Id</label>
-                <input type="number" name="campaign_id" value="{{$campaign->id}}" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
-            </div>
-            <div class="mb-3">
-                    <label for="exampleInputNama" class="form-label">Nama Lengkap</label>
-                <input type="nama" name="name" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
-            </div>
-            <div class="mb-3">
-                    <label for="exampleInputWhatsapp" class="form-label">No. Whatsapp</label>
-                    <input type="text" name="whatsapp" class="form-control" id="exampleInputWhatsapp">
-            </div>
-            <i style="opacity: 50%">Banyumax.id</i>
-            <div class="d-flex justify-content-center">
-                <button id="submitForm" type="submit" class="btn btn-primary rounded-pill" onclick="{{$campaign->event_pixel->event_pixel}} alert('klik OK Dan Tunggu #NB: Jangan Klik Tombol Pesanan Lagi, Terima Kasih :)')">Submit</button>
-            </div>
-            </form>
+    <div class="container">
+        <form action="https://api.pwkbackoffice.com/public/api/lead/{{$campaign->id}}/{{$campaign->product_id}}" method="POST">
+        <div class="mb-3" hidden>
+                <label for="exampleInputNama" class="form-label">Campaign Id</label>
+            <input type="number" name="campaign_id" value="{{$campaign->id}}" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<script>
-		$(function(){
-			$('#submitForm').click(function(){
-                $('#submitForm').attr('class', 'btn btn-primary rounded-pill disabled');
-			});
-		});
-		</script>
-    </body>
-    </html>
-                                                            </textarea>
-                                                        </td>
-                                                        <td>
-                                                            <textarea type="text" name="wp" id="inputwp" class="form-control" aria-describedby="wpHelpInline" >
-    <!doctype html>
-    <html lang="en">
-    <head>
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-        <title></title>
-    </head>
-    <body>
-
-        <form action="https://api.app.banyumax.id/public/api/lead_wa/{{$campaign->id}}/{{$campaign->product_id}}" method="POST" class="d-flex justify-content-center">
-            <button id="submit-wa" type="submit" class="btn btn-success d-flex justify-content-center rounded-pill" onclick="{{$campaign->event_wa->event_pixel}}"><i class="lab la-whatsapp pe-2" style="font-size: 24px;"></i>Pemesanan Via Whatsapp</button>
-        </form>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<script>
-		$(function(){
-			$('#submit-wa').click(function(){
-                $('#submit-wa').attr('class', 'btn btn-success d-flex justify-content-center rounded-pill disabled');
-			});
-		});
-		</script>
-    </body>
-    </html>
-                                                            </textarea>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex justify-content-end flex-shrink-0" aria-label="Basic outlined example">
-                                                                <form action="{{ route('campaign.edit',['campaign' => $campaign->id]) }}" method="GET">
-                                                                    @csrf
-                                                                    <div class="btn-toolbar justify-content-between " role="toolbar" aria-label="Toolbar with button groups">
-                                                                        <div class="btn-group" role="group" aria-label="First group">
-                                                                            <button type="submit" title="Click to edit campaign" class="btn btn-primary  btn-icon"><i class="la la-user-edit"></i></button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                                <form action="{{ route('addOperator', ['campaign' => $campaign->id]) }}" method="GET">
-                                                                    @csrf
-                                                                    <div class="btn-toolbar justify-content-between px-2 " role="toolbar" aria-label="Toolbar with button groups">
-                                                                        <div class="btn-group" role="group" aria-label="First group">
-                                                                            <button type="submit" title="Click to add operator" class="btn btn-success  btn-icon"><i class="la la-users"></i></button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                                <form action="{{route('campaign.destroy',['campaign' => $campaign->id])}}" method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                                                                        <div class="btn-group" role="group" aria-label="First group">
-                                                                            <button type="submit" title="Click to delete campaign" class="btn btn-danger btn-icon" onclick="return confirm('Jadi Delete Kah ?')"><i class="la la-trash"></i></button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                @else
-                                                    @foreach ($campaigns->where('user_id', auth()->user()->id) as $campaign)
-                                                    <tr>
-                                                        <td>
-                                                            <label class="text-dark fw-bolder text-hover-primary d-block fs-6" >{{$n+=1}}</label>
-                                                        </td>
-                                                        <td>
-                                                            <!-- <div class="d-flex align-items-center">
-                                                                <label for="">WA Generosku</label>
-                                                                <h1 class="text-dark fw-bolder text-hover-primary fs-6">https://mauorder.online/wa-generosku-2 </h1>
-                                                            </div> -->
-                                                            <div class="timeline-desc timeline-desc-light-primary mx-3">
-                                                                <span class="text-dark fw-bolder text-hover-primary d-block fs-6">{{$campaign->title}}</span>
-                                                                <!-- <p class="fw-bolder pb-2">
-                                                                    https://mauorder.online/wa-generosku-2
-                                                                </p> -->
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <label class="text-dark fw-bolder text-hover-primary d-block fs-6">{{ $campaign->operator->count() }} Operators</label>
-                                                        </td>
-                                                        <td>
-                                                            <label class="text-dark fw-bolder text-hover-primary d-block fs-6">{{$campaign->lead->count()}} Leads</label>
-                                                        </td>
-                                                        <td>
-                                                            <textarea type="text" name="tp" id="inputtp" class="form-control" aria-describedby="tpHelpInline" >
-    <!doctype html>
-    <html lang="en">
-    <head>
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-        <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        @foreach (explode(',',$campaign->facebook_pixel) as $fp)
-        fbq('init', '{{$fp}}');
-        @endforeach
-        fbq('track', 'PageView');
-        </script>
-        <noscript>
-        <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?-ev=PageView&noscript=1"/>
-        </noscript>
-
-        <title></title>
-    </head>
-    <body>
-
-        <div class="container">
-            <form action="https://api.app.banyumax.id/public/api/lead/{{$campaign->id}}/{{$campaign->product_id}}" method="POST">
-            <div class="mb-3" hidden>
-                    <label for="exampleInputNama" class="form-label">Campaign Id</label>
-                <input type="number" name="campaign_id" value="{{$campaign->id}}" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
-            </div>
-            <div class="mb-3">
-                    <label for="exampleInputNama" class="form-label">Nama Lengkap</label>
-                <input type="nama" name="name" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
-            </div>
-            <div class="mb-3">
-                    <label for="exampleInputWhatsapp" class="form-label">No. Whatsapp</label>
-                    <input type="text" name="whatsapp" class="form-control" id="exampleInputWhatsapp">
-            </div>
-            <i style="opacity: 50%">Banyumax.id</i>
-            <div class="d-flex justify-content-center">
-                <button id="submitForm" type="submit" class="btn btn-primary rounded-pill" onclick="{{$campaign->event_pixel->event_pixel}}">Submit</button>
-            </div>
-            </form>
+        <div class="mb-3">
+                <label for="exampleInputNama" class="form-label">Nama Lengkap</label>
+            <input type="nama" name="name" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<script>
-		$(function(){
-			$('#submitForm').click(function(){
-                $('#submitForm').attr('class', 'btn btn-primary rounded-pill disabled');
-			});
-		});
-		</script>
-    </body>
-    </html>
-                                                            </textarea>
-                                                        </td>
-                                                        <td>
-                                                            <textarea type="text" name="wp" id="inputwp" class="form-control" aria-describedby="wpHelpInline" >
-    <!doctype html>
-    <html lang="en">
-    <head>
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-        <title></title>
-    </head>
-    <body>
-
-        <form action="https://api.app.banyumax.id/public/api/lead_wa/{{$campaign->id}}/{{$campaign->product_id}}" method="POST" class="d-flex justify-content-center">
-            <button id="submit-wa" type="submit" class="btn btn-success d-flex justify-content-center rounded-pill" onclick="{{$campaign->event_wa->event_pixel}}"><i class="lab la-whatsapp pe-2" style="font-size: 24px;"></i>Pemesanan Via Whatsapp</button>
+        <div class="mb-3">
+                <label for="exampleInputWhatsapp" class="form-label">No. Whatsapp</label>
+                <input type="text" name="whatsapp" class="form-control" id="exampleInputWhatsapp">
+        </div>
+        <i style="opacity: 50%">Banyumax.id</i>
+        <div class="d-flex justify-content-center">
+            <button id="submitForm" type="submit" class="btn btn-primary rounded-pill" onclick="{{$campaign->event_pixel->event_pixel}}">Submit</button>
+        </div>
         </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+    $(function(){
+        $('#submitForm').click(function(){
+            $('#submitForm').attr('class', 'btn btn-primary rounded-pill disabled');
+        });
+    });
+    </script>
+</body>
+</html>
+                                                        </textarea>
+                                                    </td>
+                                                    <td>
+                                                        <textarea type="text" name="wp" id="inputwp" class="form-control" aria-describedby="wpHelpInline" >
+<!doctype html>
+<html lang="en">
+<head>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<script>
-		$(function(){
-			$('#submit-wa').click(function(){
-                $('#submit-wa').attr('class', 'btn btn-success d-flex justify-content-center rounded-pill disabled');
-			});
-		});
-		</script>
-    </body>
-    </html>
-                                                            </textarea>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex justify-content-end flex-shrink-0" aria-label="Basic outlined example">
-                                                                <form action="{{ route('campaign.edit',['campaign' => $campaign->id]) }}" method="GET">
-                                                                    @csrf
-                                                                    <div class="btn-toolbar justify-content-between " role="toolbar" aria-label="Toolbar with button groups">
-                                                                        <div class="btn-group" role="group" aria-label="First group">
-                                                                            <button type="submit" title="Click to edit campaign" class="btn btn-primary  btn-icon"><i class="la la-user-edit"></i></button>
-                                                                        </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <title></title>
+</head>
+<body>
+
+    <form action="https://api.pwkbackoffice.com/public/api/lead_wa/{{$campaign->id}}/{{$campaign->product_id}}" method="POST" class="d-flex justify-content-center">
+        <button id="submit-wa" type="submit" class="btn btn-success d-flex justify-content-center rounded-pill" onclick="{{$campaign->event_wa->event_pixel}}"><i class="lab la-whatsapp pe-2" style="font-size: 24px;"></i>Pemesanan Via Whatsapp</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+    $(function(){
+        $('#submit-wa').click(function(){
+            $('#submit-wa').attr('class', 'btn btn-success d-flex justify-content-center rounded-pill disabled');
+        });
+    });
+    </script>
+</body>
+</html>
+                                                        </textarea>
+                                                    </td>
+                                                    <td>
+                                                        <textarea type="text" name="wp" id="inputwp" class="form-control" aria-describedby="wpHelpInline" >
+<!doctype html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <title></title>
+</head>
+<body>
+
+    <div class="container">
+        <form action="https://api.pwkbackoffice.com/public/api/lead/{{$campaign->id}}/{{$campaign->product_id}}" method="POST">
+        <div class="mb-3" hidden>
+                <label for="exampleInputNama" class="form-label">Campaign Id</label>
+            <input type="number" name="campaign_id" value="{{$campaign->id}}" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
+        </div>
+        <div class="mb-3">
+                <label for="exampleInputNama" class="form-label">Nama Lengkap</label>
+            <input type="nama" name="name" class="form-control" id="exampleInputNama" aria-describedby="namaHelp">
+        </div>
+        <div class="mb-3">
+                <label for="exampleInputWhatsapp" class="form-label">No. Whatsapp</label>
+                <input type="text" name="whatsapp" class="form-control" id="exampleInputWhatsapp">
+        </div>
+        <i style="opacity: 50%">Banyumax.id</i>
+        <div class="d-flex justify-content-center">
+            <button id="submitForm" type="submit" class="btn btn-primary rounded-pill" onclick="{{$campaign->event_pixel->event_pixel}}">Submit</button>
+        </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+    $(function(){
+        $('#submitForm').click(function(){
+            $('#submitForm').attr('class', 'btn btn-primary rounded-pill disabled');
+        });
+    });
+    </script>
+    <script>
+        !function (w, d, t) {
+            w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+            ttq.load('YOUR PIXEL ID WILL BE LOCATED HERE');
+            ttq.page();
+        }(window, document, 'ttq');
+    </script>
+</body>
+</html>
+                                                        </textarea>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-end flex-shrink-0" aria-label="Basic outlined example">
+                                                            <form action="{{ route('campaign.edit',['campaign' => $campaign->id]) }}" method="GET">
+                                                                @csrf
+                                                                <div class="btn-toolbar justify-content-between " role="toolbar" aria-label="Toolbar with button groups">
+                                                                    <div class="btn-group" role="group" aria-label="First group">
+                                                                        <button type="submit" title="Click to edit campaign" class="btn btn-primary  btn-icon"><i class="la la-user-edit"></i></button>
                                                                     </div>
-                                                                </form>
-                                                                <form action="{{ route('addOperator', ['campaign' => $campaign->id]) }}" method="GET">
-                                                                    @csrf
-                                                                    <div class="btn-toolbar justify-content-between px-2 " role="toolbar" aria-label="Toolbar with button groups">
-                                                                        <div class="btn-group" role="group" aria-label="First group">
-                                                                            <button type="submit" title="Click to add operator" class="btn btn-success  btn-icon"><i class="la la-users"></i></button>
-                                                                        </div>
+                                                                </div>
+                                                            </form>
+                                                            <form action="{{ route('addOperator', ['campaign' => $campaign->id]) }}" method="GET">
+                                                                @csrf
+                                                                <div class="btn-toolbar justify-content-between px-2 " role="toolbar" aria-label="Toolbar with button groups">
+                                                                    <div class="btn-group" role="group" aria-label="First group">
+                                                                        <button type="submit" title="Click to add operator" class="btn btn-success  btn-icon"><i class="la la-users"></i></button>
                                                                     </div>
-                                                                </form>
-                                                                <form action="{{route('campaign.destroy',['campaign' => $campaign->id])}}" method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                                                                        <div class="btn-group" role="group" aria-label="First group">
-                                                                            <button type="submit" title="Click to delete campaign" class="btn btn-danger btn-icon" onclick="return confirm('Jadi Delete Kah ?')"><i class="la la-trash"></i></button>
-                                                                        </div>
+                                                                </div>
+                                                            </form>
+                                                            <form action="{{route('campaign.destroy',['campaign' => $campaign->id])}}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                                                                    <div class="btn-group" role="group" aria-label="First group">
+                                                                        <button type="submit" title="Click to delete campaign" class="btn btn-danger btn-icon" onclick="return confirm('Jadi Delete Kah ?')"><i class="la la-trash"></i></button>
                                                                     </div>
-                                                                </form>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                @endif
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
 											</tbody>
 											<!--end::Table body-->
 										</table>

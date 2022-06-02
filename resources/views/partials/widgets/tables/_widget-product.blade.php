@@ -46,7 +46,10 @@
 																		<label for="inputFullname" class="col-form-label">Name</label>
 																	</div>
 																	<div class="col-10">
-																		<input type="text" name="name" id="inputFullname" class="form-control" aria-describedby="fullnameHelpInline">
+																		<input type="text" name="name" id="inputFullname" class="form-control @error('name') is-invalid @enderror" aria-describedby="fullnameHelpInline" required>
+                                                                        @error('name')
+                                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                                        @enderror
 																	</div>
 																</div>
 																<div class="row align-items-center col-12 pb-5">
@@ -54,15 +57,18 @@
 																		<label for="inputprice" class="col-form-label">Price</label>
 																	</div>
 																	<div class="col-10">
-																		<input type="price" name="price" id="inputprice" class="form-control" aria-describedby="priceHelpInline">
+																		<input type="price" name="price" id="inputprice" class="form-control @error('price') is-invalid @enderror" aria-describedby="priceHelpInline" required>
+                                                                        @error('price')
+                                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                                        @enderror
 																	</div>
 																</div>
 																<div class="row align-items-center col-12 pb-5">
 																	<div class="col-2">
-																		<label for="inputdiscount" class="col-form-label">Discount</label>
+																		<label for="sku" class="col-form-label">SKU</label>
 																	</div>
 																	<div class="col-10">
-																		<input type="text" name="discount" id="inputdiscount" class="form-control" aria-describedby="discountHelpInline">
+																		<input type="text" name="sku" id="sku" class="form-control" aria-describedby="discountHelpInline">
 																	</div>
 																</div>
 																<div class="row align-items-center col-12 pb-5">

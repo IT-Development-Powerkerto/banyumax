@@ -30,6 +30,7 @@ class CourierController extends Controller
         else if($x->role_id == 12){
             return view('courier/DashboardJA', compact('couriers'));
         }
+
     }
 
     /**
@@ -121,6 +122,7 @@ class CourierController extends Controller
             'name' => $request->name,
             'image' => $image,
         ]);
+
         $x = auth()->user();
         if($x->admin_id == 2){
             return view('courier')->with('success', 'Successfull! Courier Edited');

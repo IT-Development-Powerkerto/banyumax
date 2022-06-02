@@ -5,7 +5,6 @@
 										<div class="card-body rounded shadow-sm" style="color:#1961A6; border:1px solid #1961A6">
 											<div class="fw-bold fs-3 mb-2 mt-5">Closing Rate</div>
 											<div class="fw-bolder fs-3hx mt-n2">{{($lead_count == 0) ? 0 : round(($closing_count / $lead_count)*100,1)}} %</div>
-											{{-- <div class="fw-bolder fs-3hx mt-n2" closing_rate></div> --}}
 										</div>
                                         <?php
                                             $n=0;
@@ -18,7 +17,7 @@
                                             $sa=0;
                                         ?>
                                         @foreach ($products as $product)
-                                            <input id="{{$product->name}}" value="{{$inputer->where('product_name', $product->name)->sum('total_price') - $inputer->where('product_name', $product->name)->sum('product_promotion')}}" hidden/>
+                                            {{-- <input id="{{$product->name}}" value="{{$inputer->where('product_name', $product->name)->sum('total_price') - $inputer->where('product_name', $product->name)->sum('product_promotion')}}" hidden/> --}}
                                             <input id="{{$su+=1}} lead_su" value="{{$lead_su->where('product_id', $product->id)->count()}}" hidden/>
                                             <input id="{{$mo+=1}} lead_mo" value="{{$lead_mo->where('product_id', $product->id)->count()}}" hidden/>
                                             <input id="{{$tu+=1}} lead_tu" value="{{$lead_tu->where('product_id', $product->id)->count()}}" hidden/>

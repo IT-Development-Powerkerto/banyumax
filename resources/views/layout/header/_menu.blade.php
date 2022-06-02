@@ -190,14 +190,14 @@
 						<a href="{{ route('operator.index') }}" class="menu-title">Operator</a>
 					</span>
 				</div>
-				<div class="menu-item menu-lg-down-accordion">
+				{{-- <div class="menu-item menu-lg-down-accordion">
 					<span class="menu-link py-3">
 						<span class="menu-bullet">
 							<span class="bullet bullet-dot"></span>
 						</span>
 						<a href="{{ route('budgeting.index') }}" class="menu-title">Budgeting Advertising</a>
 					</span>
-				</div>
+				</div> --}}
 				<div class="menu-item menu-lg-down-accordion">
 					<span class="menu-link py-3">
 						<span class="menu-bullet">

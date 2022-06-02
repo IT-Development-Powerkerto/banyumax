@@ -112,7 +112,6 @@ class LeadController extends Controller
     {
         // $lead = Lead::findOrFail($id);
         session(['previous-url' => url()->previous()]);
-        $user_admin_id = Auth::user()->admin_id;
         $products = Product::all();
         // $lead = DB::table('leads as l')
         //     ->join('operators as o', 'l.operator_id', '=', 'o.id')
@@ -128,9 +127,9 @@ class LeadController extends Controller
                 $q->withTrashed();
             },
             'product' , 'status', 'campaign', 'inputer'])->withTrashed()->first();
-        $warehouses = Warehouse::where('admin_id', $user_admin_id)->get();
+        // return $lead->inputer->warehouse_id;
 
-        $user_inputers = User::where('admin_id', $user_admin_id)->where('role_id', 10)->select('id', 'name')->get();
+        $user_inputers = User::where('admin_id', auth()->user()->admin_id)->where('role_id', 10)->select('id', 'name')->get();
         // $inputer = DB::table('inputers as i')
         //     ->join('leads as l', 'i.lead_id', '=', 'l.id')
         //     ->select('i.customer_address as address', 'i.payment_method as payment_method', 'i.warehouse as warehouse', 'i.courier as courier', 'i.payment_proof as image', 'i.product_weight as product_weight', 'i.product_promotion as product_promotion', 'i.shipping_promotion as shipping_promotion', 'i.province_id as province', 'i.total_price as total_price', 'i.shipping_price as shipping_price', 'i.total_payment as total_payment', 'i.province_id as province_id', 'i.city_id as city_id', 'i.subdistrict_id as subdistrict_id', 'i.product_promotion_id as product_promotion_id', 'i.shipping_promotion_id as shipping_promotion_id', 'i.admin_promotion_id as admin_promotion_id', 'i.product_promotion_id as add_product_promotion_id', 'i.add_shipping_promotion_id as add_shipping_promotion_id', 'i.add_admin_promotion_id as add_admin_promotion_id')
@@ -141,6 +140,8 @@ class LeadController extends Controller
         //     $q->where('id', $id);
         // })->first();
         // return $inputer;
+        $user_admin_id = auth()->user()->admin_id;
+        $warehouses = Warehouse::where('admin_id', $user_admin_id)->get();
         $product_promotion = Promotion::where('admin_id', $user_admin_id)->where('promotion_type', 'Product Price')->where('user_id', auth()->user()->id)->get();
         $shipping_promotion = Promotion::where('admin_id', $user_admin_id)->where('promotion_type', 'Shipping Cost')->where('user_id', auth()->user()->id)->get();
         $admin_promotion = Promotion::where('admin_id', $user_admin_id)->where('promotion_type', 'Admin Cost')->where('user_id', auth()->user()->id)->get();
@@ -152,7 +153,7 @@ class LeadController extends Controller
         $province_id = DB::table('inputers as i')
         ->join('leads as l', 'i.lead_id', '=', 'l.id')
         ->where('l.id', $id)
-        ->where('l.admin_id', $user_admin_id)
+        ->where('l.admin_id', auth()->user()->admin_id)
         ->value('i.province_id');
         if(isset($province_id)){
 
@@ -162,7 +163,7 @@ class LeadController extends Controller
             $city_id = DB::table('inputers as i')
             ->join('leads as l', 'i.lead_id', '=', 'l.id')
             ->where('l.id', $id)
-            ->where('l.admin_id', $user_admin_id)
+            ->where('l.admin_id', auth()->user()->admin_id)
             ->value('i.city_id');
             $all_subdistrict = Http::withHeaders(['key' => 'c2993a8c77565268712ef1e3bfb798f2'])->get('https://pro.rajaongkir.com/api/subdistrict?city='.$city_id);
             $all_subdistrict = json_decode($all_subdistrict, true);
@@ -197,6 +198,8 @@ class LeadController extends Controller
         } else{
             $whatsapp = $request->whatsapp;
         }
+        $warehouse = explode('_', $request->warehouse);
+        $warehouse = $warehouse[0];
 
         // dd($whatsapp);
 
@@ -214,9 +217,9 @@ class LeadController extends Controller
                 'total_price'       => 'required',
                 'weight'            => 'required',
                 'warehouse'         => 'required',
-                'province_id'       => 'required',
-                'city_id'           => 'required',
-                'subdistrict_id'    => 'required',
+                'province_id'          => 'required',
+                'city_id'              => 'required',
+                'subdistrict_id'       => 'required',
                 'courier'           => 'required',
                 'shipping_promotion'=> 'required',
                 'shipping_price'    => 'required',
@@ -280,7 +283,7 @@ class LeadController extends Controller
                         'add_product_promotion_id'  => $request->add_product_promotion_id,
                         'add_product_promotion'     => $request->add_product_promotion,
                         'total_price'               => $request->total_price,
-                        'warehouse'                 => $request->warehouse,
+                        'warehouse_id'                 => $warehouse,
                         'province_id'               => $request->province_id,
                         'province'                  => $province,
                         'city_id'                   => $request->city_id,
@@ -331,7 +334,7 @@ class LeadController extends Controller
                         'add_product_promotion_id'  => $request->add_product_promotion_id,
                         'add_product_promotion'     => $request->add_product_promotion,
                         'total_price'               => $request->total_price,
-                        'warehouse'                 => $request->warehouse,
+                        'warehouse_id'                 => $warehouse,
                         'province_id'               => $request->province_id,
                         'province'                  => $province,
                         'city_id'                   => $request->city_id,

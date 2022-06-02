@@ -26,16 +26,19 @@ class CampaignController extends Controller
         $campaigns = Campaign::where('admin_id', auth()->user()->admin_id)->get();
         $events = EventPixel::all();
         $eventWa = EventWa::all();
-        $product = Product::where('admin_id', auth()->user()->admin_id)->get();
-        $x=auth()->user();
-        if($x->role_id == 4){
-            return view('campaignADV', ['eventWa'=>$eventWa])->with('campaigns', $campaigns)->with('products', $product)->with('events', $events);
+        $products = Product::where('admin_id', auth()->user()->admin_id)->get();
+        $user=auth()->user();
+        if($user->role_id == 4){
+            // return view('campaignADV', ['eventWa'=>$eventWa])->with('campaigns', $campaigns)->with('products', $product)->with('events', $events);
+            return view('campaignADV', compact('eventWa', 'campaigns', 'products', 'events'));
         }
-        elseif($x->role_id == 12){
-            return view('campaign-JA-ADV', ['eventWa'=>$eventWa])->with('campaigns', $campaigns)->with('products', $product)->with('events', $events);
-        } else {
+        elseif($user->role_id == 12){
+            return view('campaign-JA-ADV', compact('eventWa', 'campaigns', 'products', 'events'));
+        } elseif($user->role_id == 1) {
         // return view('operator', ['operators'=>$operators])->with('lead_count', $lead_count)->with('campaign_count', $campaign_count);
-            return view('campaign', ['eventWa'=>$eventWa])->with('campaigns', $campaigns)->with('products', $product)->with('events', $events);
+            return view('campaign', compact('eventWa', 'campaigns', 'products', 'events'));
+        } else {
+            abort(404);
         }
     }
 
@@ -69,6 +72,7 @@ class CampaignController extends Controller
             'facebook_pixel'  => $request->fbp,
             'event_pixel_id'  => $request->event_id,
             'event_wa_id'     => $request->event_wa,
+            // 'tiktok_pixel' => $request->tkp,
             'cs_to_customer'  => $request->cs_to_customer,
             'customer_to_cs'  => $request->customer_to_cs,
             'created_at' => Carbon::now()->toDateTimeString(),
@@ -170,7 +174,7 @@ class CampaignController extends Controller
         $day = Carbon::now()->format('Y-m-d');
         $campaigns = Campaign::where('admin_id', auth()->user()->admin_id)->findOrFail($id);
         // untuk menampilkan daftar CS di dropdown saat menambah operator
-        $operators = User::where('admin_id', auth()->user()->admin_id)->where('role_id', 5)->get();
+        $operators = User::where('admin_id', auth()->user()->admin_id)->whereIn('role_id', [5,13])->get();
         // untuk menampilkan operator berdasarkan campaign
         $operatorCampaigns = Operator::where('admin_id', auth()->user()->admin_id)->where('campaign_id', $id)->get();
         $lead = Lead::where('admin_id', auth()->user()->admin_id)->get();

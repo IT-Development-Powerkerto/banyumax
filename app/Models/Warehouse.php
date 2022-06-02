@@ -10,4 +10,7 @@ class Warehouse extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = ['id'];
+    public function inputers(){
+        return $this->hasMany(Inputer::class);
+    }
 }

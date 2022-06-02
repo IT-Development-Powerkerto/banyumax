@@ -17,6 +17,7 @@ class CreateWarehousesTable extends Migration
             $table->id();
             $table->integer('admin_id');
             $table->string('name');
+            $table->string('initials')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('image')->nullable();

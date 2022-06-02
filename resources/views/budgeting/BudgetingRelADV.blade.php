@@ -253,9 +253,13 @@
                                                             </td>
                                                             <td>
                                                                 <div class="d-flex align-items-center justify-content-end">
+                                                                    @if ($budgeting_realization->attachment != null)
                                                                     <a href="{{ route('download', $budgeting_realization->id) }}">
                                                                         <button type="button" class="btn btn-primary">Download</button>
                                                                     </a>
+                                                                    @else
+                                                                    <h1 class="text-dark fw-normal fs-6">File Not Inputed</h1>
+                                                                    @endif
                                                                 </div>
                                                             </td>
                                                         </tr>
