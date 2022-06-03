@@ -19,13 +19,16 @@ use App\Models\Inputer;
 use App\Models\Budgeting;
 use App\Models\BudgetingRealization;
 use App\Events\MessageCreated;
+use App\Imports\UsersImport;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -1763,11 +1766,32 @@ class DashboardController extends Controller
             return redirect()->back();
         }
     }
+    public function importUser(Request $request){
+        // return $request->all();
+        $this->validate($request, [
+			'import_user' => 'required|mimes:csv,xls,xlsx'
+		]);
+        $file = $request->file('import_user');
+		// membuat nama file unik
+		$nama_file = rand().$file->getClientOriginalName();
 
+		// upload ke folder file_siswa di dalam folder public
+		$path = $file->move('public/file_import',$nama_file);
+
+		// import data
+		// Excel::import(new SiswaImport, public_path('/file_siswa/'.$nama_file));
+        Excel::import(new UsersImport,$path);
+        return back()->with('success', 'User Imported Successfully.');
+    }
     public function getProduct($campaign_id){
         $product_id = Campaign::where('id', $campaign_id)->value('product_id');
         $product = Product::where('id', $product_id)->get();
 
         return response()->json($product, 200);
+    }
+    public function template_user()
+    {
+        return Response::download('public/assets/file/add_user_template.xlsx');
+
     }
 }

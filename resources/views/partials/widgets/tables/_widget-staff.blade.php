@@ -56,18 +56,20 @@
                                                                     @endif
                                                                     <div >
 
-                                                                        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" class="d-flex flex-column">
+                                                                        <div class="d-flex flex-column">
+                                                                        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" class="d-flex flex-row">
                                                                             @csrf
-                                                                            <input type="file" name="import_user" class="form-control">
-                                                                            <br>
-                                                                            <div class="d-flex flex-row justify-content-between">
+                                                                            <input type="file" name="import_user" class="form-control m-2">
 
-                                                                                <form class="d-flex" action="{{ route('template_user') }}" method="GET" enctype="multipart/form-data">
-                                                                                    <button class="btn btn-success">Download Template</button>
-                                                                                </form>
-                                                                                <button class="btn btn-success">Submit</button>
-                                                                            </div>
+                                                                            <button class="btn btn-primary m-2">Submit</button>
                                                                         </form>
+                                                                        <div class="mt-5">
+
+                                                                            <form class="text-center" action="{{ route('template_user') }}" method="GET" enctype="multipart/form-data">
+                                                                                <button class="btn btn-success">Download Template</button>
+                                                                            </form>
+                                                                        </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
