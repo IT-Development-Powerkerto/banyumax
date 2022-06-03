@@ -4,7 +4,7 @@
 	<head><base href="../">
 		<title>My Profile</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" href="img/favicon.png">	
+		<link rel="icon" href="img/favicon.png">
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -25,7 +25,7 @@
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Header-->
 					@include('layout/header/_base-JA-ADV')
-					
+
 					<!--end::Header-->
 					@if(session()->has('success'))
 						<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -33,7 +33,7 @@
 							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 					@endif
-				
+
 					@if(session()->has('error'))
 						<div class="alert alert-danger alert-dismissible fade show" role="alert">
 							{{ session('error') }}
@@ -154,7 +154,7 @@
 													<!--begin::Stats-->
 													<div class="d-flex flex-wrap">
 														<!--begin::Stat-->
-														<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+														{{-- <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
 															<!--begin::Number-->
 															<div class="d-flex align-items-center">
 																<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
@@ -214,14 +214,14 @@
 															<!--begin::Label-->
 															<div class="fw-bold fs-6 text-gray-400">Equal</div>
 															<!--end::Label-->
-														</div>
+														</div> --}}
 														<!--end::Stat-->
 													</div>
 													<!--end::Stats-->
 												</div>
 												<!--end::Wrapper-->
 												<!--begin::Progress-->
-												<div class="d-flex align-items-center w-200px w-sm-300px flex-column mt-3">
+												{{-- <div class="d-flex align-items-center w-200px w-sm-300px flex-column mt-3">
 													<div class="d-flex justify-content-between w-100 mt-auto mb-2">
 														<span class="fw-bold fs-6 text-gray-400">Points</span>
 														<span class="fw-bolder fs-6">50%</span>
@@ -229,7 +229,7 @@
 													<div class="h-5px mx-3 w-100 bg-light mb-3">
 														<div class="bg-success rounded h-5px" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 													</div>
-												</div>
+												</div> --}}
 												<!--end::Progress-->
 											</div>
 											<!--end::Stats-->
@@ -338,7 +338,7 @@
 								</div>
 								<!--end::Card body-->
 							</div>
-							<!--end::details View-->			
+							<!--end::details View-->
 					<!--begin::Footer-->
 				</div>
 				<!--end::Wrapper-->

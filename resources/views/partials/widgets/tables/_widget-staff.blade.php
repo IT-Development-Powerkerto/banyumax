@@ -206,7 +206,7 @@
 													<thead>
 														<tr class="fw-bolder text-muted">
 															<th class="">Name</th>
-															<th class="">Point</th>
+															{{-- <th class="">Point</th> --}}
 															<th class="">Division</th>
 															<th class="">Status</th>
                                                             <th class="text-end">Actions</th>
@@ -232,11 +232,11 @@
 																	</div>
 																</div>
 															</td>
-															<td>
+															{{-- <td>
 																<div class="d-flex align-items-center">
 																	<h1 class="badge badge-light-info">50 Points</h1>
 																</div>
-															</td>
+															</td> --}}
 															<td>
 																<label class="text-dark fw-medium d-block fs-6">{{$user->role->name}}</label>
 															</td>

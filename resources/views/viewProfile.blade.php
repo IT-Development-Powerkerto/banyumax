@@ -113,7 +113,7 @@
 													<!--begin::Stats-->
 													<div class="d-flex flex-wrap">
 														<!--begin::Stat-->
-														<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+														{{-- <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
 															<!--begin::Number-->
 															<div class="d-flex align-items-center">
 																<!--begin::Svg Icon | path: icons/duotune/arrows/arr066.svg-->
@@ -130,7 +130,7 @@
 															<!--begin::Label-->
 															<div class="fw-bold fs-6 text-gray-400">Points</div>
 															<!--end::Label-->
-														</div>
+														</div> --}}
 														<!--end::Stat-->
                                                         <!--begin::Stat-->
 														<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
@@ -259,7 +259,7 @@
 										</div>
 										{{-- @can('change-role') --}}
 
-										
+
 										<div class="row align-items-center col-12 pb-5">
 											<div class="col-2">
 												<label for="inputRole" class="col-form-label">Role</label>
