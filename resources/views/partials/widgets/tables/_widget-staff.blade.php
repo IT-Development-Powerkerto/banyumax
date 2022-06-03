@@ -28,7 +28,7 @@
 
                                                 @else
 
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#add-user-excel" class="btn btn-sm btn-light btn-active-primary" title="Click to add a user">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#add-user-excel" class="btn btn-sm btn-light btn-active-primary m-2" title="Click to add user">
                                                     <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                                                     <span class="svg-icon svg-icon-3">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -54,16 +54,19 @@
                                                                         </div>
                                                                     </div>
                                                                     @endif
-                                                                    <div class="row">
+                                                                    <div >
 
-                                                                        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data">
+                                                                        <form action="{{ route('importUser') }}" method="POST" enctype="multipart/form-data" class="d-flex flex-column">
                                                                             @csrf
                                                                             <input type="file" name="import_user" class="form-control">
                                                                             <br>
-                                                                            <button class="btn btn-success">Submit</button>
-                                                                        </form>
-                                                                        <form class="d-flex" action="{{ route('template_user') }}" method="GET" enctype="multipart/form-data">
-                                                                            <button class="btn btn-success">Download Template</button>
+                                                                            <div class="d-flex flex-row justify-content-between">
+
+                                                                                <form class="d-flex" action="{{ route('template_user') }}" method="GET" enctype="multipart/form-data">
+                                                                                    <button class="btn btn-success">Download Template</button>
+                                                                                </form>
+                                                                                <button class="btn btn-success">Submit</button>
+                                                                            </div>
                                                                         </form>
                                                                     </div>
                                                                 </div>
