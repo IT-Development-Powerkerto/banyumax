@@ -190,7 +190,7 @@
 													<th class="min-w-100px text-center">Leads</th>
 													<th class="min-w-200px">Fp code</th>
 													<th class="min-w-200px">WA code</th>
-													<th class="min-w-200px">Tp code</th>
+													{{-- <th class="min-w-200px">Tp code</th> --}}
 													<th class="min-w-200px text-end">Actions</th>
 												</tr>
 											</thead>
@@ -316,7 +316,7 @@
 </html>
                                                         </textarea>
                                                     </td>
-                                                    <td>
+                                                    {{-- <td>
                                                         <textarea type="text" name="wp" id="inputwp" class="form-control" aria-describedby="wpHelpInline" >
 <!doctype html>
 <html lang="en">
@@ -366,7 +366,7 @@
 </body>
 </html>
                                                         </textarea>
-                                                    </td>
+                                                    </td> --}}
                                                     <td>
                                                         <div class="d-flex justify-content-end flex-shrink-0" aria-label="Basic outlined example">
                                                             <form action="{{ route('campaign.edit',['campaign' => $campaign->id]) }}" method="GET">
