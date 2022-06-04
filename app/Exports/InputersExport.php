@@ -86,7 +86,7 @@ class InputersExport implements WithHeadings, FromCollection, WithColumnFormatti
             }
 
             $adv_nickname = User::where('name', $data->adv_name)->value('nickname');
-            $cs_nickname = User::whereId('name', $data->operator_name)->value('nickname');
+            $cs_nickname = User::where('name', $data->operator_name)->value('nickname');
             $dataInputer[] = array(
                 'Order ID' => $data->lead_id,
                 'ADV Name' => $data->adv_name,
